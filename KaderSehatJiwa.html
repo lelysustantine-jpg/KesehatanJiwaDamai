@@ -325,10 +325,12 @@ footer{margin-top:22px;color:var(--muted);font-size:.78rem}
     tidak_datang:{label:"Tidak datang", cls:"p-sedang"},
   };
 
-  // ====== ATUR DI SINI: tempel URL Web App Google Apps Script (berakhiran /exec) ======
-  const API_URL = "TEMPEL_URL_WEB_APP_DI_SINI";
-  // ===================================================================================
-  const API_READY = /^https:\/\/script\.google\.com\/macros\/s\/.+\/exec$/.test(API_URL);
+  // ====== ATUR DI SINI (boleh dibiarkan) ======
+  // Biarkan seperti ini: halaman otomatis memakai URL Web App yang sama dengan PHQ4.html.
+  // Bila memakai Google Sheet kader terpisah, tempel URL Web App-nya (berakhiran /exec) di sini.
+  let API_URL = "TEMPEL_URL_WEB_APP_DI_SINI";
+  // ============================================
+  let API_READY = /^https:\/\/script\.google\.com\/macros\/s\/.+\/exec$/.test(API_URL);
   let rows = [], canWrite = false, refFilter = "aktif", role = null, code = null, lastSync = null;
   const isAdmin = () => role === "admin";
 
@@ -683,10 +685,15 @@ footer{margin-top:22px;color:var(--muted);font-size:.78rem}
   window.addEventListener("online", ()=>{ flushOutbox(); refresh(); });
   setInterval(()=>{ if(document.visibilityState==="visible" && code){ flushOutbox(); refresh(); } }, 60000);
 
-  (function start(){
+  (async function start(){
+    if(!API_READY){
+      try{ const t = await (await fetch("PHQ4.html",{cache:"no-store"})).text();
+        const m = t.match(/SHEET_URL\s*=\s*"(https:\/\/script\.google\.com\/macros\/s\/[^"]+\/exec)"/);
+        if(m){ API_URL = m[1]; API_READY = true; } }catch(e){}
+    }
     if(!API_READY){
       const n=$("#writeNotice"); n.hidden=false;
-      n.textContent="Sistem belum dihubungkan ke Google Sheet. Pengelola perlu menempelkan URL Web App pada berkas index.html (lihat README). Formulir tetap dapat dipakai untuk menghitung skor.";
+      n.textContent="Sistem belum dihubungkan ke Google Sheet. Pengelola perlu menempelkan URL Web App pada berkas PHQ4.html (lihat README). Formulir tetap dapat dipakai untuk menghitung skor.";
       updateStatus(); return;
     }
     try{ code = localStorage.getItem("ksj.code"); }catch(e){ code = null; }

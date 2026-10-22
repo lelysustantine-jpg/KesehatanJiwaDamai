@@ -180,6 +180,7 @@ a{color:var(--primary)}
   <div id="qIntro" class="qintro"></div>
   <p class="progress" id="prog"></p><div class="bar"><i id="barI"></i></div>
   <div id="questions" class="q-grid "></div>
+  
   <div class="result" id="result" aria-live="polite" style="margin-top:6px">
     <div class="score" id="scoreRow"><span class="num" id="num">–</span><span class="max" id="maxS"></span></div>
     <div class="cat" id="cat"></div>
@@ -357,7 +358,7 @@ a{color:var(--primary)}
     $("questions").innerHTML = items.map((t,i)=>`<div class="q" role="radiogroup" aria-labelledby="qt${i}">
       ${I.domainAt && I.domainAt(i) ? `<span class="qd">${I.domainAt(i)}</span>` : ""}
       <div class="qt" id="qt${i}"><span class="n">${i+1}.</span>${t}</div>
-      <div class="opts yn"><label><input type="radio" name="q${i}" id="q${i}-1" value="1"><span>Ya</span></label><label><input type="radio" name="q${i}" id="q${i}-0" value="0"><span>Tidak</span></label></div></div>`).join("");
+      <div class="opts ${I.options?"":"yn"}">${(I.options||[["Ya",1],["Tidak",0]]).map(([l,v])=>`<label><input type="radio" name="q${i}" id="q${i}-${v}" value="${v}"><span>${I.options?`<b>${v}</b>${l}`:l}</span></label>`).join("")}</div></div>`).join("");
     keep.forEach((v,i)=>{ if(v!==null){ const el=$(`q${i}-${v}`); if(el) el.checked=true; } });
   }
   function render(){
