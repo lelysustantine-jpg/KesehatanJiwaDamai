@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skrining Kecemasan GAD-7</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root{--primary:#0066a1;--primary-dark:#004a7c;--accent:#2a9d8f;--danger:#c62828;--danger-bg:#ffebee;
+--warn:#b26a00;--warn-bg:#fff4e0;--ok:#2e7d32;--ok-bg:#e8f5e9;--light:#f5f7fa;--dark:#212529;--gray:#5f6b76;--line:#e3e8ee;--card:#ffffff}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+body{background:var(--light);color:var(--dark);line-height:1.6}
+.container{max-width:1100px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
+header{background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);color:#fff;padding:18px 0;box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.header-content{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.logo-section{display:flex;gap:12px;align-items:center}
+.logo{height:64px;width:auto;border-radius:8px;background:rgba(255,255,255,.12);padding:4px}
+.title-section{flex:1;min-width:220px}
+.title-section h1{font-size:1.55rem;line-height:1.25;margin-bottom:4px}
+.title-section p{opacity:.9;font-size:.95rem}
+.back{display:inline-flex;align-items:center;gap:8px;color:#fff;text-decoration:none;font-weight:600;font-size:.9rem;background:rgba(255,255,255,.15);padding:8px 14px;border-radius:8px}
+.back:hover{background:rgba(255,255,255,.25)}
+main{padding:28px 0 10px}
+.card{background:var(--card);border-radius:12px;box-shadow:0 5px 15px rgba(0,0,0,.06);padding:22px;margin-bottom:20px}
+.card h2{color:var(--primary);font-size:1.3rem;margin-bottom:10px}
+.card h3{color:var(--dark);font-size:1.05rem;margin:14px 0 6px}
+.card p,.card li{color:#38434d}
+.card ul,.card ol{padding-left:22px}.card li{margin-bottom:6px}
+.note{background:#f0f7ff;border-left:5px solid var(--primary);border-radius:8px;padding:14px 16px;color:#2c3e50;margin-bottom:20px}
+.note i{color:var(--primary);margin-right:8px}
+footer{background:var(--dark);color:#fff;padding:30px 0 20px;margin-top:30px;text-align:center}
+footer p{margin-bottom:4px}
+footer .copyright{border-top:1px solid rgba(255,255,255,.12);margin-top:14px;padding-top:14px;color:rgba(255,255,255,.7);font-size:.9rem}
+a{color:var(--primary)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+@media (max-width:600px){.logo{height:48px}.title-section h1{font-size:1.25rem}.card{padding:16px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+.q{border-top:1px solid var(--line);padding:14px 0}
+.q:first-child{border-top:0;padding-top:0}
+.qt{font-weight:600;margin-bottom:8px}
+.qt .n{display:inline-block;min-width:26px;color:var(--primary)}
+.opts{display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(120px,1fr))}
+.opts.yn{grid-template-columns:repeat(2,minmax(0,160px))}
+.opts label{position:relative}
+.opts input{position:absolute;opacity:0;pointer-events:none}
+.opts span{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:54px;border:1.5px solid var(--line);border-radius:10px;padding:8px;font-size:.88rem;cursor:pointer;background:#fff}
+.opts span b{font-size:1.05rem}
+.opts input:checked+span{background:var(--primary);border-color:var(--primary);color:#fff}
+.opts input:focus-visible+span{outline:3px solid var(--accent);outline-offset:2px}
+.progress{font-size:.9rem;color:var(--gray);margin-bottom:6px}
+.bar{height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin-bottom:16px}.bar i{display:block;height:100%;background:var(--accent);width:0;transition:width .2s}
+.result{border-radius:12px;padding:22px;border:2px solid var(--line);background:#fff}
+.result.ok{border-color:var(--ok);background:var(--ok-bg)}.result.warn{border-color:var(--warn);background:var(--warn-bg)}.result.bad{border-color:var(--danger);background:var(--danger-bg)}
+.score{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.score .num{font-size:3rem;font-weight:800;line-height:1;color:var(--dark);font-variant-numeric:tabular-nums}
+.score .max{color:var(--gray)}
+.cat{font-size:1.25rem;font-weight:700;margin:6px 0 10px}
+.alert{background:var(--danger);color:#fff;border-radius:10px;padding:12px 14px;margin:12px 0;font-weight:600}
+.alert i{margin-right:6px}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.btn{border:0;border-radius:8px;padding:11px 18px;font-weight:700;font-size:.95rem;cursor:pointer;background:var(--primary);color:#fff;display:inline-flex;gap:8px;align-items:center}
+.btn.sec{background:#fff;color:var(--primary);border:1.5px solid var(--primary)}
+.bands{width:100%;border-collapse:collapse;margin-top:8px;font-size:.92rem}
+.bands td,.bands th{border-bottom:1px solid var(--line);padding:7px 8px;text-align:left}
+.bands th{color:var(--gray);font-size:.8rem;text-transform:uppercase;letter-spacing:.04em}
+.crisis{border-left:5px solid var(--danger)}.crisis h2{color:var(--danger)}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--dark);color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;display:none;z-index:9}
+</style>
+</head>
+<body>
+<header><div class="container"><div class="header-content">
+  <div class="logo-section"><img src="KKLP.jpg" alt="Logo KKLP" class="logo"><img src="fkuph.jpg" alt="Logo FK UPH" class="logo"></div>
+  <div class="title-section"><h1>Skrining Kecemasan (GAD-7)</h1><p>Generalized Anxiety Disorder-7 · menilai derajat gejala cemas</p></div>
+  <a class="back" href="index.html"><i class="fas fa-arrow-left"></i> Portal</a>
+</div></div></header>
+<main><div class="container">
+
+<div class="note"><i class="fas fa-info-circle"></i>Dalam <b>2 minggu terakhir</b>, seberapa sering Anda terganggu oleh masalah-masalah berikut? Pilih satu jawaban untuk setiap pertanyaan.</div>
+<div class="card">
+  <p class="progress" id="prog"></p><div class="bar"><i id="barI"></i></div>
+  <form id="qform" onsubmit="return false"></form>
+</div>
+<div class="result" id="result" aria-live="polite">
+  <div class="score"><span class="num" id="num">0</span><span class="max" id="maxS"></span></div>
+  <div class="cat" id="cat"></div>
+  <div class="alert" id="alert" hidden><i class="fas fa-triangle-exclamation"></i></div>
+  <div id="advice"></div>
+  <div class="actions">
+    <button class="btn" type="button" id="copyBtn" hidden><i class="fas fa-copy"></i> Salin ringkasan</button>
+    <button class="btn sec" type="button" id="resetBtn"><i class="fas fa-rotate-left"></i> Ulangi</button>
+  </div>
+  <p class="progress" style="margin-top:12px"><i class="fas fa-lock"></i> Jawaban hanya dihitung di perangkat ini dan tidak disimpan.</p>
+</div>
+<div class="card" style="margin-top:20px"><h2>Interpretasi skor</h2>
+  <table class="bands"><thead><tr><th>Skor</th><th>Kategori</th></tr></thead><tbody id="bandRows"></tbody></table>
+  <p style="margin-top:12px;font-size:.9rem">Titik potong ≥10 umum dipakai untuk kemungkinan gangguan cemas menyeluruh. Rujukan: Spitzer RL, Kroenke K, Williams JBW, Löwe B. A brief measure for assessing generalized anxiety disorder: the GAD-7. Arch Intern Med. 2006;166(10):1092–7.</p>
+</div>
+<div class="card crisis"><h2><i class="fas fa-phone-volume"></i> Bila ada risiko bunuh diri</h2>
+<p>Jangan tinggalkan orang tersebut sendirian, jauhkan benda berbahaya, dan segera hubungi dokter UPTD Puskesmas Damai atau IGD rumah sakit terdekat. Layanan konseling Kemenkes <strong>Healing119.id</strong> dapat dihubungi melalui telepon <strong>119 ekstensi 8</strong> atau situs healing119.id (24 jam, gratis).</p></div>
+<div class="toast" id="toast" role="status"></div>
+
+</div></main>
+<footer><div class="container">
+  <p>Dikembangkan oleh <strong>dr. Lely Sustantine Totalia</strong></p>
+  <p>Peserta Didik PPDS Kedokteran Keluarga Layanan Primer FK UPH</p>
+  <p class="copyright">&copy; <span class="yr">2026</span> Prodi PPDS KKLP FK UPH · UPTD Puskesmas Damai, Balikpapan</p>
+</div></footer>
+<script>document.querySelectorAll('.yr').forEach(e=>e.textContent=new Date().getFullYear());</script>
+<script>
+(function(){
+const C = {"name": "GAD-7", "options": [["Tidak sama sekali", 0], ["Beberapa hari", 1], ["Lebih dari separuh waktu", 2], ["Hampir setiap hari", 3]], "safety": null, "extra": {"text": "Jika Anda mengalami salah satu masalah di atas, seberapa sulit masalah tersebut membuat Anda melakukan pekerjaan, mengurus rumah, atau bergaul dengan orang lain?", "short": "Kesulitan fungsi", "options": ["Tidak sulit sama sekali", "Agak sulit", "Sangat sulit", "Amat sangat sulit"]}, "safetyText": "", "items": ["Merasa gugup, cemas, atau tegang", "Tidak mampu menghentikan atau mengendalikan rasa khawatir", "Terlalu mengkhawatirkan berbagai hal", "Sulit untuk bersantai", "Sangat gelisah sehingga sulit untuk duduk diam", "Mudah kesal atau mudah tersinggung", "Merasa takut seolah-olah sesuatu yang buruk akan terjadi"], "bands": [{"min": 0, "max": 4, "label": "Minimal", "level": "ok", "advice": ["Tidak ada indikasi kecemasan bermakna.", "Edukasi pengelolaan stres."]}, {"min": 5, "max": 9, "label": "Kecemasan ringan", "level": "warn", "advice": ["Edukasi, teknik relaksasi, dan dukungan psikososial.", "Pantau ulang bila keluhan menetap."]}, {"min": 10, "max": 14, "label": "Kecemasan sedang", "level": "warn", "advice": ["Evaluasi klinis oleh dokter; kemungkinan gangguan cemas.", "Pertimbangkan intervensi psikologis dan/atau farmakoterapi."]}, {"min": 15, "max": 21, "label": "Kecemasan berat", "level": "bad", "advice": ["Tata laksana aktif oleh dokter.", "Pertimbangkan konsultasi atau rujukan ke Sp.KJ."]}]};
+const form = document.getElementById('qform');
+form.innerHTML = C.items.map((t,i)=>`<div class="q" role="radiogroup" aria-labelledby="t${i}">
+  <div class="qt" id="t${i}"><span class="n">${i+1}.</span>${t}</div>
+  <div class="opts ${C.options.length===2?'yn':''}">${C.options.map(([lab,val])=>`<label><input type="radio" name="q${i}" id="q${i}-${val}" value="${val}"><span><b>${C.options.length===2?lab:val}</b>${C.options.length===2?'':lab}</span></label>`).join('')}</div>
+</div>`).join('') + (C.extra ? `<div class="q"><div class="qt">${C.extra.text}</div><div class="opts">${C.extra.options.map((o,j)=>`<label><input type="radio" name="extra" value="${j}"><span>${o}</span></label>`).join('')}</div><p class="progress" style="margin-top:6px">Pertanyaan ini tidak dihitung dalam skor.</p></div>` : '');
+document.getElementById('bandRows').innerHTML = C.bands.map(b=>`<tr><td>${b.min}–${b.max}</td><td>${b.label}</td></tr>`).join('');
+const n = C.items.length, maxScore = n*Math.max(...C.options.map(o=>o[1]));
+function read(){ const v=[]; for(let i=0;i<n;i++){ const c=form.querySelector(`input[name="q${i}"]:checked`); v.push(c?Number(c.value):null);} return v; }
+function band(s){ return C.bands.find(b=>s>=b.min && s<=b.max) || C.bands[C.bands.length-1]; }
+let summary='';
+function render(){
+  const v=read(), done=v.filter(x=>x!==null).length, s=v.reduce((a,b)=>a+(b||0),0);
+  document.getElementById('prog').textContent=`${done} dari ${n} pertanyaan terjawab`;
+  document.getElementById('barI').style.width=(100*done/n)+'%';
+  const box=document.getElementById('result'); box.className='result';
+  const safety = C.safety!=null && v[C.safety]!=null && v[C.safety]>0;
+  document.getElementById('alert').hidden=!safety;
+  if(done<n){ document.getElementById('num').textContent=s; document.getElementById('cat').textContent='Lengkapi semua pertanyaan untuk melihat hasil.'; document.getElementById('advice').innerHTML=''; document.getElementById('copyBtn').hidden=true; if(safety) box.classList.add('bad'); return; }
+  const b=band(s); box.classList.add(safety?'bad':b.level);
+  document.getElementById('num').textContent=s;
+  document.getElementById('cat').textContent=b.label;
+  document.getElementById('advice').innerHTML='<ul>'+b.advice.map(a=>`<li>${a}</li>`).join('')+'</ul>';
+  document.getElementById('copyBtn').hidden=false;
+  const ex = C.extra ? form.querySelector('input[name="extra"]:checked') : null;
+  summary = `${C.name} — ${new Date().toLocaleDateString('id-ID')}\nSkor: ${s}/${maxScore} (${b.label})` +
+    (safety? `\nPERHATIAN: ${C.safetyText}` : '') +
+    (ex? `\n${C.extra.short}: ${C.extra.options[Number(ex.value)]}` : '') +
+    `\nJawaban: ${v.map((x,i)=>(i+1)+'='+(C.options.length===2?(x?'Ya':'Tidak'):x)).join(', ')}`;
+}
+form.addEventListener('change',render);
+document.getElementById('maxS').textContent='/ '+maxScore;
+document.getElementById('resetBtn').addEventListener('click',()=>{ form.reset(); render(); window.scrollTo({top:0,behavior:'smooth'}); });
+document.getElementById('copyBtn').addEventListener('click',async()=>{
+  try{ await navigator.clipboard.writeText(summary); toast('Ringkasan disalin. Tempel ke rekam medis atau pesan rujukan.'); }
+  catch(e){ const t=document.createElement('textarea'); t.value=summary; document.body.appendChild(t); t.select(); try{document.execCommand('copy'); toast('Ringkasan disalin.');}catch(_){toast('Salin manual: '+summary);} t.remove(); }
+});
+function toast(m){ const t=document.getElementById('toast'); t.textContent=m; t.style.display='block'; clearTimeout(toast.h); toast.h=setTimeout(()=>t.style.display='none',3000); }
+render();
+})();
+</script>
+</body>
+</html>

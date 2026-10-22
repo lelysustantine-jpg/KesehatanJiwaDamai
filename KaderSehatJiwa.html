@@ -1,0 +1,699 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Kader Sehat Jiwa Damai</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: phone-first field tool — sticky tab bar, one column of cards; wider screens get two-column rekap. */
+:root{
+  --bg:#f3f7f6; --surface:#ffffff; --surface-2:#e8f1ef; --line:#cfdedb;
+  --ink:#16302f; --muted:#5b7471; --teal:#0e4a55; --accent:#1f8a7d; --accent-ink:#ffffff;
+  --ok:#2f7d4f; --ok-bg:#e2f2e8; --warn:#9a6a00; --warn-bg:#fbf0d3; --sev:#b5452a; --sev-bg:#fbe3dc;
+  --mild:#c99a1e; --mod:#d9773f; --sevbar:#c4502f; --normal:#6fa98a;
+  --font:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --r:12px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1b1c; --surface:#172728; --surface-2:#1e3334; --line:#2c4546;
+  --ink:#e4efed; --muted:#9db3b0; --teal:#8fd3c9; --accent:#3fb3a3; --accent-ink:#06201d;
+  --ok:#7ccb9a; --ok-bg:#183326; --warn:#f0c766; --warn-bg:#3a2f12; --sev:#ff9a7d; --sev-bg:#3e1f17;
+  --mild:#e2b743; --mod:#ec935c; --sevbar:#e2694a; --normal:#6fbf93; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0f1b1c; --surface:#172728; --surface-2:#1e3334; --line:#2c4546;
+  --ink:#e4efed; --muted:#9db3b0; --teal:#8fd3c9; --accent:#3fb3a3; --accent-ink:#06201d;
+  --ok:#7ccb9a; --ok-bg:#183326; --warn:#f0c766; --warn-bg:#3a2f12; --sev:#ff9a7d; --sev-bg:#3e1f17;
+  --mild:#e2b743; --mod:#ec935c; --sevbar:#e2694a; --normal:#6fbf93; color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 40px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:980px;margin:0 auto}
+header.top{padding-block:20px 12px;display:flex;flex-wrap:wrap;gap:8px 16px;align-items:flex-end;justify-content:space-between}
+.portal-link{display:inline-block;font-size:.82rem;font-weight:700;color:var(--accent);text-decoration:none;margin-bottom:4px}
+.brand h1{margin:0;font-size:1.45rem;font-weight:800;letter-spacing:-.01em;color:var(--teal);text-wrap:balance}
+.brand p{margin:2px 0 0;color:var(--muted);font-size:.86rem}
+.status{font-size:.8rem;color:var(--muted);display:flex;align-items:center;gap:6px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+.dot.on{background:var(--ok)} .dot.off{background:var(--sev)}
+nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:8px;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+nav.tabs button{font:inherit;font-weight:600;font-size:.88rem;border:1px solid var(--line);background:var(--surface);color:var(--ink);
+  padding:9px 6px;border-radius:10px;cursor:pointer;display:flex;gap:6px;justify-content:center;align-items:center;min-width:0}
+nav.tabs button[aria-selected="true"]{background:var(--teal);border-color:var(--teal);color:var(--bg)}
+nav.tabs .badge{font-size:.72rem;background:var(--sev);color:#fff;border-radius:99px;padding:0 6px;font-weight:700}
+nav.tabs button:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+section.view{display:grid;gap:14px;margin-top:6px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;min-width:0}
+.card h2{margin:0 0 4px;font-size:1.05rem;font-weight:700}
+.card h3{margin:0 0 8px;font-size:.92rem;font-weight:700}
+.hint{color:var(--muted);font-size:.84rem;margin:0}
+.notice{border-radius:10px;padding:10px 12px;font-size:.86rem;background:var(--warn-bg);color:var(--ink);border:1px solid var(--line)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+label.f{display:grid;gap:4px;font-size:.82rem;font-weight:600;color:var(--muted);min-width:0}
+input,select,textarea{font:inherit;font-size:.95rem;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:9px 10px;width:100%;min-width:0}
+textarea{resize:vertical;min-height:60px}
+.q{border-top:1px solid var(--line);padding-block:12px;display:grid;gap:8px}
+.q:first-of-type{border-top:0}
+.q .qt{font-weight:600;font-size:.93rem}
+.q .qt small{display:block;color:var(--muted);font-weight:500;font-size:.78rem;letter-spacing:.04em;text-transform:uppercase;margin-bottom:2px}
+.opts{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.opts label{position:relative}
+.opts input{position:absolute;opacity:0;pointer-events:none}
+.opts span{display:grid;place-items:center;text-align:center;gap:2px;border:1px solid var(--line);border-radius:9px;padding:8px 4px;font-size:.78rem;line-height:1.2;cursor:pointer;min-height:58px;background:var(--surface)}
+.opts span b{font-family:var(--mono);font-size:1rem}
+.opts input:checked + span{background:var(--teal);color:var(--bg);border-color:var(--teal)}
+.opts input:focus-visible + span{outline:3px solid var(--accent);outline-offset:2px}
+.checks{display:grid;gap:6px}
+.checks label{display:flex;gap:10px;align-items:flex-start;font-size:.9rem;padding:8px 10px;border:1px solid var(--line);border-radius:9px;cursor:pointer}
+.checks input{width:18px;height:18px;margin-top:2px;flex:none;accent-color:var(--sev)}
+.result{border-radius:var(--r);padding:16px;display:grid;gap:10px;border:1px solid var(--line);background:var(--surface-2)}
+.result.pos{background:var(--warn-bg)} .result.danger{background:var(--sev-bg);border-color:var(--sev)} .result.neg{background:var(--ok-bg)}
+.scores{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.score{background:var(--surface);border-radius:10px;padding:8px 10px;border:1px solid var(--line)}
+.score .k{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;font-weight:700}
+.score .v{font-family:var(--mono);font-size:1.4rem;font-variant-numeric:tabular-nums}
+.decision{font-weight:700;font-size:1rem}
+.decision-text{font-size:.88rem;margin:0}
+.pill{display:inline-flex;align-items:center;gap:4px;font-size:.74rem;font-weight:700;border-radius:99px;padding:2px 9px;white-space:nowrap}
+.p-normal{background:var(--ok-bg);color:var(--ok)} .p-ringan{background:var(--warn-bg);color:var(--warn)}
+.p-sedang{background:var(--sev-bg);color:var(--sev)} .p-berat{background:var(--sev);color:#fff}
+.p-bahaya{background:var(--sev);color:#fff} .p-pos{background:var(--warn-bg);color:var(--warn)} .p-neg{background:var(--ok-bg);color:var(--ok)}
+.p-status{background:var(--surface-2);color:var(--ink);border:1px solid var(--line)}
+.btn{font:inherit;font-weight:700;border-radius:10px;border:1px solid var(--teal);background:var(--teal);color:var(--bg);padding:11px 16px;cursor:pointer}
+.btn.sec{background:transparent;color:var(--teal)}
+.btn.sm{padding:6px 10px;font-size:.8rem;border-radius:8px}
+.btn.danger{border-color:var(--sev);background:transparent;color:var(--sev)}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-weight:600;font-size:.88rem;z-index:20;max-width:calc(100% - 32px)}
+/* referral list */
+.filters{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:inherit;font-size:.8rem;font-weight:600;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:99px;padding:5px 12px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--teal);border-color:var(--teal);color:var(--bg)}
+.ref{display:grid;gap:8px;border:1px solid var(--line);border-radius:var(--r);padding:12px;background:var(--surface)}
+.ref.danger{border-color:var(--sev);box-shadow:inset 4px 0 0 var(--sev)}
+.ref .meta{font-size:.82rem;color:var(--muted)}
+.ref .code{font-family:var(--mono);font-weight:500;color:var(--ink)}
+.ref details{border-top:1px dashed var(--line);padding-top:8px}
+.ref summary{cursor:pointer;font-size:.85rem;font-weight:700;color:var(--teal)}
+.steps{display:flex;flex-wrap:wrap;gap:6px}
+/* rekap */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px}
+.kpi .k{font-size:.74rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.kpi .v{font-size:1.7rem;font-weight:800;font-variant-numeric:tabular-nums;color:var(--teal);line-height:1.15}
+.kpi .s{font-size:.78rem;color:var(--muted)}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.86rem;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-size:.74rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+td.n,th.n{text-align:right}
+.bar{height:8px;background:var(--surface-2);border-radius:99px;overflow:hidden;min-width:80px}
+.bar i{display:block;height:100%;background:var(--accent)}
+.stack{display:flex;height:22px;border-radius:7px;overflow:hidden;background:var(--surface-2)}
+.stack i{display:block;height:100%}
+.legend{display:flex;flex-wrap:wrap;gap:10px;font-size:.8rem;color:var(--muted);margin-top:6px}
+.legend b{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+.two{display:grid;gap:14px;grid-template-columns:1fr}
+@media (min-width:760px){.two{grid-template-columns:1fr 1fr}}
+.empty{text-align:center;padding:26px 12px;color:var(--muted);font-size:.9rem}
+.guide ol{margin:6px 0 0;padding-left:20px} .guide li{margin-bottom:6px}
+.guide table td{white-space:normal}
+footer{margin-top:22px;color:var(--muted);font-size:.78rem}
+@media (max-width:420px){nav.tabs button{font-size:.8rem;padding:9px 2px}.opts span{font-size:.72rem}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+<header class="top">
+  <div class="brand">
+    <a href="index.html" class="portal-link">&larr; Portal Kesehatan Jiwa</a>
+    <h1>Kader Sehat Jiwa</h1>
+    <p>Skrining PHQ-4 berbasis kader · UPTD Puskesmas Damai, Balikpapan</p>
+  </div>
+  <div class="row"><div class="status" id="status"><span class="dot" id="dot"></span><span id="statusText">Memeriksa koneksi…</span></div><button class="btn sec sm" id="refreshBtn" type="button" hidden>Muat ulang</button><button class="btn sec sm" id="logoutBtn" type="button" hidden>Keluar</button></div>
+</header>
+
+<nav class="tabs" role="tablist" aria-label="Menu">
+  <button role="tab" id="tab-skrining" aria-controls="skrining" aria-selected="true">Skrining</button>
+  <button role="tab" id="tab-rujukan" aria-controls="rujukan" aria-selected="false">Rujukan <span class="badge" id="refBadge" hidden>0</span></button>
+  <button role="tab" id="tab-rekap" aria-controls="rekap" aria-selected="false">Rekap</button>
+  <button role="tab" id="tab-panduan" aria-controls="panduan" aria-selected="false">Panduan</button>
+</nav>
+
+<div class="card" id="authCard" style="margin-top:6px" hidden>
+  <h2>Masuk</h2>
+  <p class="hint">Masukkan kode akses dari pengelola program kesehatan jiwa UPTD Puskesmas Damai. Tanpa kode, formulir tetap bisa dipakai untuk menghitung skor, tetapi hasil tidak tersimpan.</p>
+  <form id="authForm" class="row" style="margin-top:10px">
+    <input id="authCode" type="password" autocomplete="current-password" placeholder="Kode akses" style="flex:1;min-width:160px">
+    <button class="btn" type="submit" id="authBtn">Masuk</button>
+  </form>
+  <p class="hint" id="authMsg" role="status" style="margin-top:6px"></p>
+</div>
+
+<!-- ============ SKRINING ============ -->
+<section class="view" id="skrining" role="tabpanel" aria-labelledby="tab-skrining">
+  <div class="notice" id="writeNotice" hidden></div>
+  <form id="form" class="card" novalidate>
+    <h2>Skrining baru</h2>
+    <p class="hint">Jangan menulis nama atau NIK warga. Gunakan kode warga yang dicatat juga di buku register kader.</p>
+    <div class="grid2" style="margin-top:12px">
+      <label class="f">Kode kader<input id="kodeKader" required placeholder="mis. DB-P05-K1" autocomplete="off"></label>
+      <label class="f">Tanggal<input id="tanggal" type="date" required></label>
+      <label class="f">Kelurahan
+        <select id="kelurahan" required>
+          <option value="">Pilih…</option>
+          <option>Damai</option><option>Damai Baru</option><option>Damai Bahagia</option>
+        </select>
+      </label>
+      <label class="f">Posyandu<input id="posyandu" list="posyanduList" required placeholder="nama posyandu" autocomplete="off"></label>
+      <label class="f">RT<input id="rt" inputmode="numeric" required placeholder="mis. 12" autocomplete="off"></label>
+      <label class="f">Kode warga<input id="kodeWarga" required placeholder="mis. W-012" autocomplete="off"></label>
+      <label class="f">Usia (tahun)<input id="usia" type="number" min="15" max="110" inputmode="numeric" required></label>
+      <label class="f">Jenis kelamin
+        <select id="jk" required><option value="">Pilih…</option><option value="L">Laki-laki</option><option value="P">Perempuan</option></select>
+      </label>
+    </div>
+    <datalist id="posyanduList"></datalist>
+
+    <div style="margin-top:16px">
+      <h3>Dalam 2 minggu terakhir, seberapa sering …</h3>
+      <div id="questions"></div>
+    </div>
+
+    <div style="margin-top:6px">
+      <h3>Tanda bahaya (centang bila ada, apa pun skornya)</h3>
+      <div class="checks" id="dangers"></div>
+    </div>
+
+    <div class="result" id="result" style="margin-top:16px" aria-live="polite">
+      <div class="scores">
+        <div class="score"><div class="k">PHQ-2</div><div class="v" id="sPhq">–</div></div>
+        <div class="score"><div class="k">GAD-2</div><div class="v" id="sGad">–</div></div>
+        <div class="score"><div class="k">Total</div><div class="v" id="sTot">–</div></div>
+      </div>
+      <div class="decision" id="decision">Isi keempat pertanyaan untuk melihat hasil.</div>
+      <p class="decision-text" id="decisionText"></p>
+    </div>
+
+    <div class="checks" style="margin-top:14px">
+      <label><input type="checkbox" id="consent"> Warga sudah dijelaskan tujuan skrining dan bersedia diskrining.</label>
+    </div>
+    <div class="row" style="margin-top:14px">
+      <button class="btn" type="submit" id="saveBtn">Simpan hasil skrining</button>
+      <button class="btn sec" type="button" id="resetBtn">Kosongkan</button>
+      <span class="hint" id="formMsg" role="status"></span>
+    </div>
+  </form>
+</section>
+
+<!-- ============ RUJUKAN ============ -->
+<section class="view" id="rujukan" role="tabpanel" aria-labelledby="tab-rujukan" hidden>
+  <div class="card">
+    <h2>Rujukan dan verifikasi</h2>
+    <p class="hint">Warga dengan hasil positif atau tanda bahaya. Perbarui status saat surat rujukan diserahkan, saat warga datang ke Puskesmas, dan setelah dokter memverifikasi.</p>
+    <div class="filters" style="margin-top:12px" id="refFilters"></div>
+  </div>
+  <div id="refList" style="display:grid;gap:10px"></div>
+</section>
+
+<!-- ============ REKAP ============ -->
+<section class="view" id="rekap" role="tabpanel" aria-labelledby="tab-rekap" hidden>
+  <div class="card">
+    <div class="row" style="justify-content:space-between">
+      <div><h2>Diagnosis komunitas lanjutan</h2><p class="hint">Rekap otomatis dari seluruh skrining kader. Target: 54 kader × 10 warga = 540 warga usia ≥15 tahun.</p></div>
+      <div class="row">
+        <select id="fKel" aria-label="Saring kelurahan" style="width:auto"><option value="">Semua kelurahan</option><option>Damai</option><option>Damai Baru</option><option>Damai Bahagia</option></select>
+        <button class="btn sec sm" id="csvBtn" type="button">Unduh CSV</button>
+      </div>
+    </div>
+  </div>
+  <div class="kpis" id="kpis"></div>
+  <div class="two">
+    <div class="card"><h3>Kategori PHQ-4</h3><div id="catStack"></div></div>
+    <div class="card"><h3>Pembanding</h3><div id="compare"></div></div>
+  </div>
+  <div class="card"><h3>Capaian per kelurahan</h3><div class="tw" id="kelTable"></div></div>
+  <div class="two">
+    <div class="card"><h3>Menurut kelompok usia</h3><div class="tw" id="ageTable"></div></div>
+    <div class="card"><h3>Menurut jenis kelamin</h3><div class="tw" id="sexTable"></div></div>
+  </div>
+  <div class="card"><h3>Capaian per kader</h3><p class="hint">Indikator: ≥70% kader (≥38 kader) melakukan skrining minimal 10 warga.</p><div class="tw" id="kaderTable" style="margin-top:8px"></div></div>
+  <div class="card"><h3>Data skrining terbaru</h3><div class="tw" id="dataTable"></div></div>
+</section>
+
+<!-- ============ PANDUAN ============ -->
+<section class="view guide" id="panduan" role="tabpanel" aria-labelledby="tab-panduan" hidden>
+  <div class="card">
+    <h2>Cara menilai PHQ-4</h2>
+    <div class="tw" style="margin-top:8px"><table>
+      <tr><th>Jawaban</th><th class="n">Nilai</th></tr>
+      <tr><td>Tidak sama sekali</td><td class="n">0</td></tr>
+      <tr><td>Kurang dari 1 minggu</td><td class="n">1</td></tr>
+      <tr><td>Lebih dari 1 minggu</td><td class="n">2</td></tr>
+      <tr><td>Hampir setiap hari</td><td class="n">3</td></tr>
+    </table></div>
+    <ol>
+      <li><b>PHQ-2</b> = butir 1 + 2 (depresi). <b>GAD-2</b> = butir 3 + 4 (cemas).</li>
+      <li>PHQ-2 ≥3 <b>atau</b> GAD-2 ≥3 → <b>positif</b>: beri pertolongan pertama psikologis lalu rujuk ke Puskesmas Damai.</li>
+      <li>Skor total 0–2 normal, 3–5 ringan, 6–8 sedang, 9–12 berat.</li>
+      <li>Ada tanda bahaya → <b>lapor hari ini</b> ke pengelola program jiwa atau dokter Puskesmas, apa pun skornya. Jangan tinggalkan warga sendirian dan dampingi keluarganya.</li>
+    </ol>
+  </div>
+  <div class="card">
+    <h2>Pertolongan pertama psikologis</h2>
+    <ol>
+      <li><b>Lihat:</b> pastikan warga aman, kenali kebutuhan mendesak.</li>
+      <li><b>Dengar:</b> dekati dengan tenang, dengarkan tanpa memaksa bercerita dan tanpa menghakimi.</li>
+      <li><b>Hubungkan:</b> bantu warga ke dukungan keluarga dan layanan Puskesmas. Serahkan surat rujukan.</li>
+    </ol>
+  </div>
+  <div class="card">
+    <h2>Menjaga kerahasiaan</h2>
+    <ol>
+      <li>Catat identitas lengkap hanya di formulir kertas PHQ-4 dan buku register kader.</li>
+      <li>Di sistem ini cukup kode warga, usia, jenis kelamin, RT, dan jawaban.</li>
+      <li>Hasil skrining tidak dibicarakan dengan tetangga atau di grup percakapan umum.</li>
+    </ol>
+  </div>
+</section>
+
+<footer>Instrumen: PHQ-4 (Kroenke et al., 2009) sesuai formulir skrining kesehatan jiwa Kemenkes. Skrining bukan diagnosis; diagnosis ditegakkan dokter Puskesmas. Pembanding 0,64% = proporsi positif skrining di dalam gedung Puskesmas Damai tahun 2025.</footer>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+(function(){
+  "use strict";
+  const $ = (s, r=document) => r.querySelector(s);
+  const KEL = ["Damai","Damai Baru","Damai Bahagia"];
+  const KADER = {"Damai":25,"Damai Baru":9,"Damai Bahagia":20};
+  const TARGET = {"Damai":250,"Damai Baru":90,"Damai Bahagia":200};
+  const TARGET_ALL = 540;
+  const BASE_POS = 0.0064;
+  const QUESTIONS = [
+    {id:"q1", tag:"PHQ-2 · butir 1", text:"kurang/tidak bersemangat dalam melakukan kegiatan sehari-hari?"},
+    {id:"q2", tag:"PHQ-2 · butir 2", text:"merasa murung, tertekan, atau putus asa?"},
+    {id:"q3", tag:"GAD-2 · butir 3", text:"merasa gugup, cemas, atau gelisah?"},
+    {id:"q4", tag:"GAD-2 · butir 4", text:"tidak mampu mengendalikan rasa khawatir?"},
+  ];
+  const OPTS = [["Tidak sama sekali",0],["< 1 minggu",1],["> 1 minggu",2],["Hampir setiap hari",3]];
+  const DANGERS = [
+    {id:"bunuhDiri", text:"Ungkapan ingin mati, rencana, atau percobaan bunuh diri"},
+    {id:"kekerasan", text:"Perilaku kekerasan atau membahayakan diri/orang lain"},
+    {id:"psikotik", text:"Gejala psikotik akut: mendengar/melihat yang tidak ada, bicara kacau, curiga berlebihan"},
+    {id:"pasung", text:"Dipasung, dikurung, atau ditelantarkan"},
+  ];
+  const DANGER_LABEL = Object.fromEntries(DANGERS.map(d=>[d.id,d.text.split(":")[0].split(",")[0]]));
+  const STATUS = {
+    segera:{label:"Lapor segera", cls:"p-bahaya"},
+    perlu:{label:"Perlu dirujuk", cls:"p-pos"},
+    dirujuk:{label:"Surat rujukan diserahkan", cls:"p-status"},
+    datang:{label:"Datang ke Puskesmas", cls:"p-status"},
+    terverifikasi:{label:"Terverifikasi", cls:"p-neg"},
+    tidak_datang:{label:"Tidak datang", cls:"p-sedang"},
+  };
+
+  // ====== ATUR DI SINI: tempel URL Web App Google Apps Script (berakhiran /exec) ======
+  const API_URL = "TEMPEL_URL_WEB_APP_DI_SINI";
+  // ===================================================================================
+  const API_READY = /^https:\/\/script\.google\.com\/macros\/s\/.+\/exec$/.test(API_URL);
+  let rows = [], canWrite = false, refFilter = "aktif", role = null, code = null, lastSync = null;
+  const isAdmin = () => role === "admin";
+
+  // ---------- build form ----------
+  $("#questions").innerHTML = QUESTIONS.map((q,i)=>`
+    <div class="q" role="radiogroup" aria-labelledby="${q.id}-t">
+      <div class="qt" id="${q.id}-t"><small>${q.tag}</small>${i+1}. … ${q.text}</div>
+      <div class="opts">${OPTS.map(([t,v])=>`<label><input type="radio" name="${q.id}" id="${q.id}-${v}" value="${v}"><span><b>${v}</b>${t}</span></label>`).join("")}</div>
+    </div>`).join("");
+  $("#dangers").innerHTML = DANGERS.map(d=>`<label><input type="checkbox" id="d-${d.id}" value="${d.id}"> ${d.text}</label>`).join("");
+
+  const todayISO = () => { const d=new Date(); d.setMinutes(d.getMinutes()-d.getTimezoneOffset()); return d.toISOString().slice(0,10); };
+  $("#tanggal").value = todayISO();
+  try { const k = localStorage.getItem("ksj.kodeKader"); if(k) $("#kodeKader").value = k;
+        const p = JSON.parse(localStorage.getItem("ksj.lokasi")||"null"); if(p){ $("#kelurahan").value=p.kel||""; $("#posyandu").value=p.pos||""; } } catch(e){}
+
+  function score(){
+    const v = QUESTIONS.map(q=>{ const c=document.querySelector(`input[name="${q.id}"]:checked`); return c?Number(c.value):null; });
+    const done = v.every(x=>x!==null);
+    const phq = (v[0]??0)+(v[1]??0), gad=(v[2]??0)+(v[3]??0), tot=phq+gad;
+    const dangers = DANGERS.filter(d=>$("#d-"+d.id).checked).map(d=>d.id);
+    return {v, done, phq, gad, tot, dangers, kategori: kategori(tot), positif: done && (phq>=3||gad>=3)};
+  }
+  function kategori(t){ return t<=2?"Normal":t<=5?"Ringan":t<=8?"Sedang":"Berat"; }
+  function tindakan(s){ return s.dangers.length ? "segera" : s.positif ? "perlu" : "edukasi"; }
+
+  function renderResult(){
+    const s = score(), box=$("#result");
+    $("#sPhq").textContent = s.done? s.phq : "–";
+    $("#sGad").textContent = s.done? s.gad : "–";
+    $("#sTot").textContent = s.done? s.tot : "–";
+    box.className = "result";
+    if(s.dangers.length){
+      box.classList.add("danger");
+      $("#decision").textContent = "TANDA BAHAYA: laporkan hari ini";
+      $("#decisionText").textContent = "Hubungi pengelola program jiwa atau dokter Puskesmas Damai sekarang. Jangan tinggalkan warga sendirian, dampingi keluarganya, dan jauhkan benda berbahaya.";
+    } else if(!s.done){
+      $("#decision").textContent = "Isi keempat pertanyaan untuk melihat hasil.";
+      $("#decisionText").textContent = "";
+    } else if(s.positif){
+      box.classList.add("pos");
+      const which = [s.phq>=3?"gejala depresi (PHQ-2 ≥3)":null, s.gad>=3?"gejala cemas (GAD-2 ≥3)":null].filter(Boolean).join(" dan ");
+      $("#decision").textContent = `Positif · ${s.kategori}: rujuk ke Puskesmas`;
+      $("#decisionText").textContent = `Terdapat ${which}. Berikan pertolongan pertama psikologis (lihat–dengar–hubungkan), jelaskan bahwa ini bukan diagnosis, lalu serahkan surat rujukan ke Puskesmas Damai.`;
+    } else {
+      box.classList.add("neg");
+      $("#decision").textContent = `Negatif · ${s.kategori}`;
+      $("#decisionText").textContent = "Berikan edukasi menjaga kesehatan jiwa dan ketahanan keluarga. Anjurkan datang ke kader atau Puskesmas bila keluhan muncul.";
+    }
+  }
+  $("#form").addEventListener("change", renderResult);
+  renderResult();
+
+  function toast(msg){ const t=$("#toast"); t.textContent=msg; t.hidden=false; clearTimeout(toast._t); toast._t=setTimeout(()=>t.hidden=true,2800); }
+
+  $("#resetBtn").addEventListener("click", clearAnswers);
+  function clearAnswers(){
+    document.querySelectorAll('#questions input, #dangers input').forEach(i=>i.checked=false);
+    ["kodeWarga","usia","rt"].forEach(id=>$("#"+id).value="");
+    $("#jk").value=""; $("#consent").checked=false; $("#formMsg").textContent="";
+    renderResult();
+  }
+
+  $("#form").addEventListener("submit", async (e)=>{
+    e.preventDefault();
+    const s = score(), msg=$("#formMsg");
+    const f = id => $("#"+id).value.trim();
+    const missing = [];
+    ["kodeKader","tanggal","kelurahan","posyandu","rt","kodeWarga","usia","jk"].forEach(id=>{ if(!f(id)) missing.push(id); });
+    if(missing.length){ msg.textContent="Lengkapi data warga terlebih dahulu."; $("#"+missing[0]).focus(); return; }
+    const usia = Number(f("usia"));
+    if(!(usia>=15 && usia<=110)){ msg.textContent="Sasaran skrining adalah warga usia 15 tahun ke atas."; $("#usia").focus(); return; }
+    if(!s.done){ msg.textContent="Jawab keempat pertanyaan PHQ-4."; return; }
+    if(!$("#consent").checked){ msg.textContent="Centang persetujuan warga sebelum menyimpan."; $("#consent").focus(); return; }
+    if(!API_READY){ msg.textContent="Sistem belum dihubungkan ke Google Sheet. Hubungi pengelola."; return; }
+    if(!code){ msg.textContent="Masuk dengan kode akses terlebih dahulu."; showAuth(true); $("#authCode").focus(); return; }
+    const t = tindakan(s);
+    const doc = {
+      kodeKader: f("kodeKader").toUpperCase(), tanggal: f("tanggal"), kelurahan: f("kelurahan"),
+      posyandu: f("posyandu"), rt: f("rt"), kodeWarga: f("kodeWarga").toUpperCase(), usia, jk: f("jk"),
+      q1:s.v[0], q2:s.v[1], q3:s.v[2], q4:s.v[3], phq2:s.phq, gad2:s.gad, total:s.tot, kategori:s.kategori,
+      positif:s.positif, bahaya:s.dangers, tindakan:t, status: t==="edukasi" ? "" : t, createdAt: Date.now(),
+    };
+    const btn=$("#saveBtn"); btn.disabled=true; msg.textContent="Menyimpan…";
+    const done = (queued) => {
+      try{ localStorage.setItem("ksj.kodeKader", doc.kodeKader); localStorage.setItem("ksj.lokasi", JSON.stringify({kel:doc.kelurahan,pos:doc.posyandu})); }catch(e){}
+      clearAnswers(); msg.textContent="";
+      const tail = t==="segera" ? " Segera laporkan tanda bahaya ke Puskesmas." : t==="perlu" ? " Warga masuk daftar rujukan." : "";
+      toast((queued ? "Belum ada sinyal: hasil disimpan di HP dan dikirim otomatis nanti." : "Tersimpan.") + tail);
+    };
+    try{
+      await api.add(doc); done(false); refresh();
+    }catch(err){
+      if(err && err.network){ const o=readOutbox(); o.push(doc); writeOutbox(o); updateStatus(); done(true); }
+      else { msg.textContent = errText(err); if(err && err.error==="unauthorized") logout("Kode akses tidak berlaku lagi. Masuk kembali."); }
+    }finally{ btn.disabled=false; }
+  });
+
+  function errText(err){
+    const c = err && err.error;
+    if(err && err.network) return "Tidak ada sinyal internet. Coba lagi saat sinyal tersedia.";
+    if(c==="unauthorized") return "Kode akses tidak berlaku. Masuk kembali dengan kode dari pengelola.";
+    if(c==="forbidden") return "Hanya petugas Puskesmas (kode admin) yang dapat melakukan ini.";
+    if(c==="invalid") return "Data tidak lengkap atau tidak valid: " + (err.detail||"periksa isian") + ".";
+    if(c==="not_found") return "Data tidak ditemukan. Muat ulang halaman.";
+    return "Gagal menghubungi server. Coba lagi beberapa saat.";
+  }
+  function setReadOnly(){
+    canWrite=false; $("#saveBtn").disabled=true;
+    const n=$("#writeNotice"); n.hidden=false;
+    n.textContent="Anda dapat melihat data, tetapi belum dapat menyimpan. Minta pengelola menambahkan akun Anda sebagai Kontributor (anggota organisasi) atau Editor.";
+    renderAll();
+  }
+
+  // ---------- tabs ----------
+  const TABS=["skrining","rujukan","rekap","panduan"];
+  function show(name){
+    TABS.forEach(t=>{ $("#"+t).hidden = t!==name; $("#tab-"+t).setAttribute("aria-selected", String(t===name)); });
+    try{ localStorage.setItem("ksj.tab",name);}catch(e){}
+  }
+  TABS.forEach(t=>$("#tab-"+t).addEventListener("click",()=>show(t)));
+  { let start = (location.hash||"").slice(1); if(!TABS.includes(start)){ try{ start=localStorage.getItem("ksj.tab")||"skrining"; }catch(e){ start="skrining"; } }
+    show(TABS.includes(start)?start:"skrining"); }
+
+  // ---------- rujukan ----------
+  const FILTERS = [["aktif","Perlu tindakan"],["segera","Tanda bahaya"],["terverifikasi","Terverifikasi"],["tidak_datang","Tidak datang"],["semua","Semua"]];
+  function renderFilters(){
+    $("#refFilters").innerHTML = FILTERS.map(([k,l])=>`<button type="button" class="chip" data-f="${k}" aria-pressed="${refFilter===k}">${l}</button>`).join("");
+  }
+  $("#refFilters").addEventListener("click",e=>{ const b=e.target.closest("[data-f]"); if(!b) return; refFilter=b.dataset.f; renderFilters(); renderRefs(); });
+
+  const esc = s => String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const fmtDate = iso => { if(!iso) return "–"; const [y,m,d]=iso.split("-"); return `${d}/${m}/${y}`; };
+
+  function renderRefs(){
+    const refs = rows.filter(r=>r.status);
+    const active = refs.filter(r=>["segera","perlu","dirujuk","datang"].includes(r.status));
+    const b=$("#refBadge"); b.hidden=!active.length; b.textContent=active.length;
+    let list = refs;
+    if(refFilter==="aktif") list = active;
+    else if(refFilter==="segera") list = refs.filter(r=>r.bahaya && r.bahaya.length);
+    else if(refFilter!=="semua") list = refs.filter(r=>r.status===refFilter);
+    list = list.slice().sort((a,b)=>(b.bahaya?.length?1:0)-(a.bahaya?.length?1:0) || (b.createdAt||0)-(a.createdAt||0));
+    if(!list.length){
+      $("#refList").innerHTML = `<div class="card empty">${refs.length? "Tidak ada warga pada kelompok ini." : "Belum ada warga yang perlu dirujuk. Hasil skrining positif dan tanda bahaya akan muncul di sini secara otomatis."}</div>`;
+      return;
+    }
+    $("#refList").innerHTML = list.map(r=>{
+      const st = STATUS[r.status]||STATUS.perlu, v=r.verifikasi||{};
+      const danger = r.bahaya && r.bahaya.length;
+      return `<article class="ref${danger?" danger":""}" data-id="${esc(r.id)}">
+        <div class="row" style="justify-content:space-between">
+          <div class="row"><span class="code">${esc(r.kodeWarga)}</span><span class="pill ${st.cls}">${st.label}</span>${danger?'<span class="pill p-bahaya">Tanda bahaya</span>':""}</div>
+          <span class="meta">${fmtDate(r.tanggal)}</span>
+        </div>
+        <div class="meta">${esc(r.kelurahan)} · ${esc(r.posyandu)} · RT ${esc(r.rt)} · ${esc(r.usia)} th · ${r.jk==="L"?"Laki-laki":"Perempuan"} · kader ${esc(r.kodeKader)}</div>
+        <div class="meta">PHQ-2 <b>${r.phq2}</b> · GAD-2 <b>${r.gad2}</b> · Total <b>${r.total}</b> (${esc(r.kategori)})${danger? " · "+r.bahaya.map(x=>esc(DANGER_LABEL[x]||x)).join(", "):""}</div>
+        ${canWrite?`<div class="steps">
+          ${r.status==="segera"||r.status==="perlu"?`<button class="btn sm" data-act="dirujuk">Surat rujukan diserahkan</button>`:""}
+          ${["segera","perlu","dirujuk"].includes(r.status)?`<button class="btn sm sec" data-act="datang">Sudah datang ke Puskesmas</button>`:""}
+          ${["dirujuk","perlu"].includes(r.status)?`<button class="btn sm danger" data-act="tidak_datang">Tidak datang</button>`:""}
+          ${r.status==="tidak_datang"?`<button class="btn sm sec" data-act="dirujuk">Rujuk ulang</button>`:""}
+        </div>`:""}
+        <details ${r.status==="datang"?"open":""}>
+          <summary>${r.status==="terverifikasi"?"Hasil verifikasi Puskesmas":"Verifikasi oleh dokter Puskesmas"}</summary>
+          ${r.status==="terverifikasi"?`<p class="meta" style="margin:8px 0 0">SRQ-20: <b>${esc(v.srq20??"–")}</b> · ${v.hasil==="ya"?"Terkonfirmasi masalah kesehatan jiwa":"Tidak terkonfirmasi"}${v.dx?" · "+esc(v.dx):""}${v.catatan?"<br>"+esc(v.catatan):""}</p>`:""}
+          ${isAdmin()?`<div class="grid2" style="margin-top:8px">
+            <label class="f">Skor SRQ-20 (0–20)<input type="number" min="0" max="20" id="srq-${esc(r.id)}" value="${esc(v.srq20??"")}"></label>
+            <label class="f">Hasil
+              <select id="hasil-${esc(r.id)}"><option value="">Pilih…</option><option value="ya" ${v.hasil==="ya"?"selected":""}>Terkonfirmasi</option><option value="tidak" ${v.hasil==="tidak"?"selected":""}>Tidak terkonfirmasi</option></select>
+            </label>
+            <label class="f">Diagnosis kerja<input id="dx-${esc(r.id)}" value="${esc(v.dx??"")}" placeholder="mis. F32 Episode depresi"></label>
+          </div>
+          <label class="f" style="margin-top:8px">Catatan tindak lanjut<textarea id="cat-${esc(r.id)}">${esc(v.catatan??"")}</textarea></label>
+          <div class="row" style="margin-top:8px"><button class="btn sm" data-act="verify">Simpan verifikasi</button></div>`:""}
+        </details>
+      </article>`;
+    }).join("");
+  }
+  $("#refList").addEventListener("click", async e=>{
+    const b=e.target.closest("[data-act]"); if(!b||!role) return;
+    const card=b.closest("[data-id]"), id=card.dataset.id, act=b.dataset.act;
+    let patch;
+    if(act==="verify"){
+      const srqRaw=$("#srq-"+CSS.escape(id)).value, hasil=$("#hasil-"+CSS.escape(id)).value;
+      if(!hasil){ toast("Pilih hasil verifikasi."); return; }
+      const srq = srqRaw===""?null:Math.max(0,Math.min(20,Number(srqRaw)));
+      patch={status:"terverifikasi", verifikasi:{srq20:srq, hasil, dx:$("#dx-"+CSS.escape(id)).value.trim(), catatan:$("#cat-"+CSS.escape(id)).value.trim(), at:Date.now()}};
+    } else patch={status:act, [act+"At"]:Date.now()};
+    b.disabled=true;
+    try{ await api.update(id, patch); toast("Status diperbarui."); refresh(); }
+    catch(err){ toast(errText(err)); b.disabled=false; }
+  });
+
+  // ---------- rekap ----------
+  function wilson(x,n){ if(!n) return [0,0]; const z=1.96,p=x/n,d=1+z*z/n,c=p+z*z/(2*n),m=z*Math.sqrt(p*(1-p)/n+z*z/(4*n*n)); return [(c-m)/d,(c+m)/d]; }
+  const pct = (x,n,dp=1) => n? (100*x/n).toFixed(dp).replace(".",",")+"%" : "–";
+  function agg(list){
+    const n=list.length, pos=list.filter(r=>r.positif).length, dep=list.filter(r=>r.phq2>=3).length, anx=list.filter(r=>r.gad2>=3).length,
+      bah=list.filter(r=>r.bahaya&&r.bahaya.length).length, refs=list.filter(r=>r.status), done=refs.filter(r=>["datang","terverifikasi"].includes(r.status)).length,
+      ver=refs.filter(r=>r.status==="terverifikasi"), konf=ver.filter(r=>r.verifikasi&&r.verifikasi.hasil==="ya").length;
+    return {n,pos,dep,anx,bah,ref:refs.length,done,ver:ver.length,konf};
+  }
+  function renderRekap(){
+    const kel=$("#fKel").value, list=kel?rows.filter(r=>r.kelurahan===kel):rows, a=agg(list), target=kel?TARGET[kel]:TARGET_ALL;
+    const [lo,hi]=wilson(a.pos,a.n);
+    $("#kpis").innerHTML = [
+      ["Warga diskrining", a.n, `target ${target} · ${pct(a.n,target,0)}`],
+      ["Positif PHQ-4", pct(a.pos,a.n), a.n?`${a.pos} warga · IK95% ${pct(lo*a.n,a.n)}–${pct(hi*a.n,a.n)}`:"belum ada data"],
+      ["Gejala depresi", pct(a.dep,a.n), `${a.dep} warga · PHQ-2 ≥3`],
+      ["Gejala cemas", pct(a.anx,a.n), `${a.anx} warga · GAD-2 ≥3`],
+      ["Tanda bahaya", a.bah, "dilaporkan segera"],
+      ["Rujukan sampai", pct(a.done,a.ref,0), `${a.done} dari ${a.ref} warga dirujuk`],
+      ["Terverifikasi", a.ver, a.ver?`${a.konf} terkonfirmasi (${pct(a.konf,a.ver,0)})`:"menunggu verifikasi"],
+    ].map(([k,v,s])=>`<div class="kpi"><div class="k">${k}</div><div class="v">${v}</div><div class="s">${s}</div></div>`).join("");
+
+    const cats=[["Normal","var(--normal)"],["Ringan","var(--mild)"],["Sedang","var(--mod)"],["Berat","var(--sevbar)"]];
+    const counts=cats.map(([c])=>list.filter(r=>r.kategori===c).length);
+    $("#catStack").innerHTML = a.n ? `<div class="stack" role="img" aria-label="${cats.map(([c],i)=>c+" "+counts[i]).join(", ")}">${cats.map(([c,col],i)=>counts[i]?`<i style="width:${100*counts[i]/a.n}%;background:${col}" title="${c}: ${counts[i]}"></i>`:"").join("")}</div>
+      <div class="legend">${cats.map(([c,col],i)=>`<span><b style="background:${col}"></b>${c} ${counts[i]} (${pct(counts[i],a.n,0)})</span>`).join("")}</div>`
+      : `<p class="empty">Distribusi kategori muncul setelah skrining pertama disimpan.</p>`;
+
+    const max=Math.max(a.n?a.pos/a.n:0,BASE_POS,0.0001);
+    $("#compare").innerHTML = `<div style="display:grid;gap:10px;font-size:.86rem">
+      <div><div class="row" style="justify-content:space-between"><span>Skrining kader di komunitas</span><b>${pct(a.pos,a.n)}</b></div><div class="bar" style="margin-top:4px"><i style="width:${a.n?100*(a.pos/a.n)/max:0}%"></i></div></div>
+      <div><div class="row" style="justify-content:space-between"><span>Skrining di dalam gedung, 2025</span><b>0,64%</b></div><div class="bar" style="margin-top:4px"><i style="width:${100*BASE_POS/max}%;background:var(--muted)"></i></div></div>
+      <p class="hint">Perbedaan proporsi menunjukkan besaran masalah yang selama ini tidak terjaring di Puskesmas.</p></div>`;
+
+    $("#kelTable").innerHTML = `<table><tr><th>Kelurahan</th><th class="n">Kader</th><th class="n">Diskrining</th><th>Capaian target</th><th class="n">Positif</th><th class="n">Bahaya</th><th class="n">Dirujuk sampai</th></tr>${
+      KEL.map(k=>{ const s=agg(rows.filter(r=>r.kelurahan===k)); return `<tr><td>${k}</td><td class="n">${new Set(rows.filter(r=>r.kelurahan===k).map(r=>r.kodeKader)).size}/${KADER[k]}</td><td class="n">${s.n}/${TARGET[k]}</td><td><div class="bar"><i style="width:${Math.min(100,100*s.n/TARGET[k])}%"></i></div></td><td class="n">${s.pos} (${pct(s.pos,s.n)})</td><td class="n">${s.bah}</td><td class="n">${s.done}/${s.ref}</td></tr>`; }).join("")}</table>`;
+
+    const groups=[["15–24",15,24],["25–44",25,44],["45–59",45,59],["≥60",60,200]];
+    $("#ageTable").innerHTML = `<table><tr><th>Usia</th><th class="n">n</th><th class="n">Depresi</th><th class="n">Cemas</th><th class="n">Positif</th></tr>${
+      groups.map(([l,lo2,hi2])=>{ const g=list.filter(r=>r.usia>=lo2&&r.usia<=hi2), s=agg(g); return `<tr><td>${l}</td><td class="n">${s.n}</td><td class="n">${pct(s.dep,s.n)}</td><td class="n">${pct(s.anx,s.n)}</td><td class="n">${pct(s.pos,s.n)}</td></tr>`; }).join("")}</table>`;
+    $("#sexTable").innerHTML = `<table><tr><th>Jenis kelamin</th><th class="n">n</th><th class="n">Depresi</th><th class="n">Cemas</th><th class="n">Positif</th></tr>${
+      [["L","Laki-laki"],["P","Perempuan"]].map(([c,l])=>{ const s=agg(list.filter(r=>r.jk===c)); return `<tr><td>${l}</td><td class="n">${s.n}</td><td class="n">${pct(s.dep,s.n)}</td><td class="n">${pct(s.anx,s.n)}</td><td class="n">${pct(s.pos,s.n)}</td></tr>`; }).join("")}</table>`;
+
+    const byK={}; list.forEach(r=>{ const k=r.kodeKader||"?"; (byK[k]=byK[k]||{n:0,pos:0,kel:r.kelurahan,pos_:r.posyandu}); byK[k].n++; if(r.positif) byK[k].pos++; });
+    const ks=Object.entries(byK).sort((x,y)=>y[1].n-x[1].n), reached=ks.filter(([,v])=>v.n>=10).length;
+    $("#kaderTable").innerHTML = ks.length ? `<p class="hint" style="margin:0 0 6px">${reached} kader telah mencapai ≥10 warga (${pct(reached,54,0)} dari 54 kader).</p>
+      <table><tr><th>Kode kader</th><th>Kelurahan</th><th>Posyandu</th><th class="n">Diskrining</th><th>Target 10</th><th class="n">Positif</th></tr>${
+      ks.map(([k,v])=>`<tr><td><span class="code" style="font-family:var(--mono)">${esc(k)}</span></td><td>${esc(v.kel)}</td><td>${esc(v.pos_)}</td><td class="n">${v.n}</td><td><span class="pill ${v.n>=10?"p-neg":"p-status"}">${v.n>=10?"Tercapai":(10-v.n)+" lagi"}</span></td><td class="n">${v.pos}</td></tr>`).join("")}</table>`
+      : `<p class="empty">Belum ada kader yang menyimpan skrining.</p>`;
+
+    const recent=list.slice(0,60);
+    $("#dataTable").innerHTML = recent.length ? `<table><tr><th>Tanggal</th><th>Kode warga</th><th>Kelurahan</th><th>Posyandu</th><th class="n">Usia</th><th>JK</th><th class="n">PHQ-2</th><th class="n">GAD-2</th><th>Hasil</th><th>Kader</th>${isAdmin()?"<th></th>":""}</tr>${
+      recent.map(r=>`<tr data-id="${esc(r.id)}"><td>${fmtDate(r.tanggal)}</td><td style="font-family:var(--mono)">${esc(r.kodeWarga)}</td><td>${esc(r.kelurahan)}</td><td>${esc(r.posyandu)}</td><td class="n">${esc(r.usia)}</td><td>${esc(r.jk)}</td><td class="n">${r.phq2}</td><td class="n">${r.gad2}</td><td>${r.bahaya&&r.bahaya.length?'<span class="pill p-bahaya">Bahaya</span>':r.positif?'<span class="pill p-pos">Positif</span>':'<span class="pill p-neg">Negatif</span>'}</td><td style="font-family:var(--mono)">${esc(r.kodeKader)}</td>${isAdmin()?`<td><button class="btn sm danger" data-del>Hapus</button></td>`:""}</tr>`).join("")}</table>${list.length>60?`<p class="hint" style="margin-top:6px">Menampilkan 60 dari ${list.length} data. Unduh CSV untuk data lengkap.</p>`:""}`
+      : `<p class="empty">Belum ada data. Mulai dari menu Skrining: setiap hasil yang disimpan kader langsung masuk ke rekap ini.</p>`;
+  }
+  $("#fKel").addEventListener("change", renderRekap);
+  $("#dataTable").addEventListener("click", async e=>{
+    const b=e.target.closest("[data-del]"); if(!b||!isAdmin()) return;
+    if(!b.dataset.armed){ b.dataset.armed="1"; b.textContent="Yakin hapus?"; setTimeout(()=>{ if(b.isConnected){ delete b.dataset.armed; b.textContent="Hapus"; } },4000); return; }
+    const id=b.closest("[data-id]").dataset.id; b.disabled=true;
+    try{ await api.del(id); toast("Data dihapus."); refresh(); }catch(err){ toast(errText(err)); b.disabled=false; }
+  });
+
+  $("#csvBtn").addEventListener("click", async ()=>{
+    if(!rows.length){ toast("Belum ada data untuk diunduh."); return; }
+    const cols=["tanggal","kelurahan","posyandu","rt","kodeKader","kodeWarga","usia","jk","q1","q2","q3","q4","phq2","gad2","total","kategori","positif","bahaya","tindakan","status","srq20","hasilVerifikasi","diagnosis","catatan"];
+    const lines=[cols.join(",")].concat(rows.map(r=>{ const v=r.verifikasi||{}; return [r.tanggal,r.kelurahan,r.posyandu,r.rt,r.kodeKader,r.kodeWarga,r.usia,r.jk,r.q1,r.q2,r.q3,r.q4,r.phq2,r.gad2,r.total,r.kategori,r.positif?"ya":"tidak",(r.bahaya||[]).join("|"),r.tindakan,r.status||"",v.srq20??"",v.hasil??"",v.dx??"",v.catatan??""]
+      .map(x=>{ const s=String(x??""); return /[",\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s; }).join(","); }));
+    const blob=new Blob(["\ufeff"+lines.join("\n")],{type:"text/csv;charset=utf-8"});
+    const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=`skrining-kader-jiwa-damai-${todayISO()}.csv`;
+    document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+  });
+
+  function renderPosyanduList(){
+    const set=[...new Set(rows.map(r=>r.posyandu).filter(Boolean))].sort();
+    $("#posyanduList").innerHTML=set.map(p=>`<option value="${esc(p)}">`).join("");
+  }
+  function renderAll(){ renderFilters(); renderRefs(); renderRekap(); renderPosyanduList(); }
+  renderAll();
+
+  // ---------- Google Apps Script API ----------
+  const api = {
+    async get(params){
+      const u = new URL(API_URL); Object.entries(params).forEach(([k,v])=>u.searchParams.set(k,v));
+      let res; try{ res = await fetch(u.toString(), {method:"GET", cache:"no-store"}); }catch(e){ throw {network:true}; }
+      const j = await res.json().catch(()=>({ok:false,error:"bad_response"})); if(!j.ok) throw j; return j;
+    },
+    async post(body){
+      let res; try{ res = await fetch(API_URL, {method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"}, body:JSON.stringify({...body, token:code})}); }
+      catch(e){ throw {network:true}; }
+      const j = await res.json().catch(()=>({ok:false,error:"bad_response"})); if(!j.ok) throw j; return j;
+    },
+    add(d){ return this.post({action:"add", data:d}); },
+    update(id, patch){ return this.post({action:"update", id, patch}); },
+    del(id){ return this.post({action:"delete", id}); },
+  };
+
+  const OB = "ksj.outbox";
+  function readOutbox(){ try{ return JSON.parse(localStorage.getItem(OB)||"[]"); }catch(e){ return []; } }
+  function writeOutbox(a){ try{ localStorage.setItem(OB, JSON.stringify(a)); }catch(e){} }
+  let flushing = false;
+  async function flushOutbox(){
+    const a = readOutbox(); if(!a.length || !code || flushing) return;
+    flushing = true; const rest = []; let sent = 0;
+    for(let k=0; k<a.length; k++){
+      try{ await api.add(a[k]); sent++; }
+      catch(e){ if(e && e.network){ rest.push(...a.slice(k)); break; } rest.push(a[k]); }
+    }
+    writeOutbox(rest); flushing = false;
+    if(sent){ toast(`${sent} hasil skrining tertunda berhasil dikirim.`); refresh(); } else updateStatus();
+  }
+
+  function setStatus(on,text){ $("#dot").className="dot "+(on?"on":"off"); $("#statusText").textContent=text; }
+  function updateStatus(extra){
+    const pend = readOutbox().length;
+    if(!API_READY){ setStatus(false,"Belum terhubung ke Google Sheet"); return; }
+    if(!code){ setStatus(false,"Belum masuk"+(pend?` · ${pend} tertunda`:"")); return; }
+    const who = isAdmin() ? "Petugas Puskesmas" : "Kader";
+    const time = lastSync ? lastSync.toLocaleTimeString("id-ID",{hour:"2-digit",minute:"2-digit"}) : "–";
+    setStatus(!!lastSync && !extra, extra || `${who} · ${rows.length} data · diperbarui ${time}${pend?` · ${pend} tertunda`:""}`);
+  }
+  function showAuth(on){ $("#authCard").hidden=!on; $("#logoutBtn").hidden=on||!code; $("#refreshBtn").hidden=on||!code; }
+
+  async function refresh(){
+    if(!code || !API_READY) return;
+    try{
+      const j = await api.get({action:"list", token:code});
+      role = j.role; canWrite = true; lastSync = new Date();
+      rows = (j.rows||[]).map(r=>({...r, status: r.status || null})).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
+      showAuth(false); updateStatus(); renderAll();
+    }catch(e){
+      if(e && e.error==="unauthorized") logout("Kode akses tidak berlaku lagi. Masuk kembali.");
+      else updateStatus(e && e.network ? "Tidak ada sinyal · menampilkan data terakhir" : "Gagal memuat data");
+    }
+  }
+  function logout(message){
+    code=null; role=null; rows=[]; canWrite=false; lastSync=null;
+    try{ localStorage.removeItem("ksj.code"); }catch(e){}
+    $("#authMsg").textContent = message || ""; showAuth(true); updateStatus(); renderAll();
+  }
+  $("#logoutBtn").addEventListener("click", ()=>logout(""));
+  $("#refreshBtn").addEventListener("click", ()=>{ flushOutbox(); refresh(); });
+  $("#authForm").addEventListener("submit", async e=>{
+    e.preventDefault();
+    const val = $("#authCode").value.trim(); if(!val) return;
+    if(!API_READY){ $("#authMsg").textContent="Sistem belum dihubungkan ke Google Sheet. Hubungi pengelola."; return; }
+    $("#authBtn").disabled=true; $("#authMsg").textContent="Memeriksa kode…";
+    const prev = code; code = val;
+    try{
+      await api.get({action:"whoami", token:val});
+      try{ localStorage.setItem("ksj.code", val); }catch(err){}
+      $("#authCode").value=""; $("#authMsg").textContent="";
+      await refresh(); flushOutbox();
+    }catch(err){
+      code = prev; $("#authMsg").textContent = err && err.network ? "Tidak ada sinyal internet. Coba lagi." : "Kode akses salah.";
+    }finally{ $("#authBtn").disabled=false; }
+  });
+  window.addEventListener("online", ()=>{ flushOutbox(); refresh(); });
+  setInterval(()=>{ if(document.visibilityState==="visible" && code){ flushOutbox(); refresh(); } }, 60000);
+
+  (function start(){
+    if(!API_READY){
+      const n=$("#writeNotice"); n.hidden=false;
+      n.textContent="Sistem belum dihubungkan ke Google Sheet. Pengelola perlu menempelkan URL Web App pada berkas index.html (lihat README). Formulir tetap dapat dipakai untuk menghitung skor.";
+      updateStatus(); return;
+    }
+    try{ code = localStorage.getItem("ksj.code"); }catch(e){ code = null; }
+    if(code){ showAuth(false); updateStatus("Memuat data…"); refresh().then(flushOutbox); }
+    else { showAuth(true); updateStatus(); }
+  })();
+})();
+</script>
+</body>
+</html>
