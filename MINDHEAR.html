@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skrining Mini MINDHEAR - Puskesmas Damai</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root{--primary:#0066a1;--primary-dark:#004a7c;--accent:#2a9d8f;--danger:#c62828;--danger-bg:#ffebee;
+--warn:#b26a00;--warn-bg:#fff4e0;--ok:#2e7d32;--ok-bg:#e8f5e9;--light:#f5f7fa;--dark:#212529;--gray:#5f6b76;--line:#e3e8ee;--card:#ffffff}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+[hidden]{display:none!important}
+body{background:var(--light);color:var(--dark);line-height:1.6}
+.container{max-width:1100px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
+header{background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);color:#fff;padding:18px 0;box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.header-content{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.logo-section{display:flex;gap:12px;align-items:center}
+.logo{height:64px;width:auto;border-radius:8px;background:rgba(255,255,255,.12);padding:4px}
+.title-section{flex:1;min-width:220px}
+.title-section h1{font-size:1.55rem;line-height:1.25;margin-bottom:4px}
+.title-section p{opacity:.9;font-size:.95rem}
+.back{display:inline-flex;align-items:center;gap:8px;color:#fff;text-decoration:none;font-weight:600;font-size:.9rem;background:rgba(255,255,255,.15);padding:8px 14px;border-radius:8px}
+.back:hover{background:rgba(255,255,255,.25)}
+main{padding:28px 0 10px}
+.card{background:var(--card);border-radius:12px;box-shadow:0 5px 15px rgba(0,0,0,.06);padding:22px;margin-bottom:20px}
+.card h2{color:var(--primary);font-size:1.3rem;margin-bottom:10px}
+.card h3{color:var(--dark);font-size:1.05rem;margin:14px 0 6px}
+.card p,.card li{color:#38434d}
+.card ul,.card ol{padding-left:22px}.card li{margin-bottom:6px}
+.note{background:#f0f7ff;border-left:5px solid var(--primary);border-radius:8px;padding:14px 16px;color:#2c3e50;margin-bottom:20px}
+.note i{color:var(--primary);margin-right:8px}
+footer{background:var(--dark);color:#fff;padding:30px 0 20px;margin-top:30px;text-align:center}
+footer p{margin-bottom:4px}
+footer .copyright{border-top:1px solid rgba(255,255,255,.12);margin-top:14px;padding-top:14px;color:rgba(255,255,255,.7);font-size:.9rem}
+a{color:var(--primary)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+@media (max-width:600px){.logo{height:48px}.title-section h1{font-size:1.25rem}.card{padding:16px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+.q{border-top:1px solid var(--line);padding:14px 0}
+.q:first-child{border-top:0;padding-top:0}
+.qt{font-weight:600;margin-bottom:8px}
+.qt .n{display:inline-block;min-width:26px;color:var(--primary)}
+.opts{display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(120px,1fr))}
+.opts.yn{grid-template-columns:repeat(2,minmax(0,160px))}
+.opts label{position:relative}
+.opts input{position:absolute;opacity:0;pointer-events:none}
+.opts span{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:54px;border:1.5px solid var(--line);border-radius:10px;padding:8px;font-size:.88rem;cursor:pointer;background:#fff}
+.opts span b{font-size:1.05rem}
+.opts input:checked+span{background:var(--primary);border-color:var(--primary);color:#fff}
+.opts input:focus-visible+span{outline:3px solid var(--accent);outline-offset:2px}
+.progress{font-size:.9rem;color:var(--gray);margin-bottom:6px}
+.bar{height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin-bottom:16px}.bar i{display:block;height:100%;background:var(--accent);width:0;transition:width .2s}
+.result{border-radius:12px;padding:22px;border:2px solid var(--line);background:#fff}
+.result.ok{border-color:var(--ok);background:var(--ok-bg)}.result.warn{border-color:var(--warn);background:var(--warn-bg)}.result.bad{border-color:var(--danger);background:var(--danger-bg)}
+.score{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.score .num{font-size:3rem;font-weight:800;line-height:1;color:var(--dark);font-variant-numeric:tabular-nums}
+.score .max{color:var(--gray)}
+.cat{font-size:1.25rem;font-weight:700;margin:6px 0 10px}
+.alert{background:var(--danger);color:#fff;border-radius:10px;padding:12px 14px;margin:12px 0;font-weight:600}
+.alert i{margin-right:6px}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.btn{border:0;border-radius:8px;padding:11px 18px;font-weight:700;font-size:.95rem;cursor:pointer;background:var(--primary);color:#fff;display:inline-flex;gap:8px;align-items:center}
+.btn.sec{background:#fff;color:var(--primary);border:1.5px solid var(--primary)}
+.bands{width:100%;border-collapse:collapse;margin-top:8px;font-size:.92rem}
+.bands td,.bands th{border-bottom:1px solid var(--line);padding:7px 8px;text-align:left}
+.bands th{color:var(--gray);font-size:.8rem;text-transform:uppercase;letter-spacing:.04em}
+.crisis{border-left:5px solid var(--danger)}.crisis h2{color:var(--danger)}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--dark);color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;display:none;z-index:9}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.f{display:flex;flex-direction:column;gap:4px;font-size:.88rem;font-weight:600;color:#38434d;min-width:0}
+.f small{font-weight:400;color:var(--gray)}
+.f input,.f select,.f textarea{font:inherit;font-weight:400;font-size:.98rem;padding:10px 12px;border:1.5px solid var(--line);border-radius:8px;background:#fff;color:var(--dark);width:100%}
+.f input:focus,.f select:focus,.f textarea:focus{border-color:var(--primary);outline:none;box-shadow:0 0 0 3px rgba(0,102,161,.15)}
+.f.err input,.f.err select{border-color:var(--danger)}
+.f .msg{color:var(--danger);font-weight:500;font-size:.8rem}
+.consent{display:flex;gap:12px;align-items:flex-start;background:#f0f7ff;border-radius:10px;padding:14px;font-size:.95rem;cursor:pointer}
+.consent input{width:22px;height:22px;flex:none;margin-top:2px;accent-color:var(--primary)}
+.sec-title{display:flex;align-items:center;gap:10px}
+.sec-title .badge{background:var(--primary);color:#fff;border-radius:50%;width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;font-size:.9rem;flex:none}
+.sub3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.sub3 div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.sub3 span{display:block;font-size:.75rem;color:var(--gray);text-transform:uppercase;letter-spacing:.04em;font-weight:700}
+.sub3 b{font-size:1.6rem;font-variant-numeric:tabular-nums}
+.submitbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:16px}
+.status-line{font-size:.9rem;color:var(--gray)}
+.status-line.bad{color:var(--danger);font-weight:600}
+.done{text-align:center;padding:30px 22px}
+.done .big{font-size:3rem;color:var(--ok)}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.logo.tile{background:#fff;padding:6px}
+.res-card{padding:24px}
+.res-saved{display:inline-flex;gap:8px;align-items:center;font-size:.85rem;font-weight:600;color:var(--ok);background:var(--ok-bg);border-radius:99px;padding:4px 12px;margin-bottom:12px}
+.res-name{font-weight:700;font-size:1.05rem;color:#15312f;word-break:break-word}
+.res-score{display:flex;align-items:baseline;gap:10px;margin-top:6px}
+.res-score span{font-size:4rem;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.res-score small{color:var(--gray);font-size:.95rem}
+.res-cat{font-size:1.35rem;font-weight:800;margin:4px 0 14px}
+.scale{position:relative;padding-top:20px;margin:4px 0 6px}
+.scale .segs{display:flex;gap:4px;height:14px}
+.scale .segs i{display:block;height:100%;border-radius:4px}
+.scale .mk{position:absolute;top:0;width:0;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center}
+.scale .mk b{font-size:.75rem;line-height:1;margin-bottom:2px}
+.scale .mk i{display:block;width:3px;height:30px;background:#111;border-radius:2px}
+.scale .ticks{position:relative;height:18px;margin-top:6px;font-size:.75rem;color:var(--gray)}
+.scale .ticks span{position:absolute;transform:translateX(-50%)}
+.scale .ticks span:first-child{transform:none}.scale .ticks span:last-child{transform:translateX(-100%)}
+.res-sub{font-size:.9rem;color:var(--gray);margin-top:8px}
+.chip{display:inline-block;border-radius:99px;padding:2px 10px;font-size:.78rem;font-weight:700}
+.chip.pos{background:var(--danger-bg);color:var(--danger)}.chip.neg{background:var(--ok-bg);color:var(--ok)}
+.res-advice{font-size:1.05rem;line-height:1.65;color:#22313a}
+.res-note{background:#e3efed;border-radius:10px;padding:14px 16px;margin:16px 0;color:#2c3e3c;font-size:.95rem}
+.btn-wa{display:flex;justify-content:center;align-items:center;gap:10px;background:#0f6b66;color:#fff;text-decoration:none;font-weight:700;font-size:1.05rem;border-radius:12px;padding:16px}
+.btn-wa:hover{background:#0b5753}
+.btn-wa i{font-size:1.3rem}
+.wa-num{text-align:center;font-size:.9rem;color:var(--gray);margin:8px 0 12px}
+.btn-out{display:block;width:100%;background:#fff;color:#0f6b66;border:2px solid #0f6b66;border-radius:12px;padding:14px;font-weight:700;font-size:1.05rem;cursor:pointer}
+.btn-out:hover{background:#eef6f5}
+.setup{background:var(--warn-bg);border-left:5px solid var(--warn);border-radius:8px;padding:14px 16px;margin-bottom:20px}
+
+.opts.yn{grid-template-columns:repeat(2,minmax(0,150px))}
+.opts.yn span{min-height:46px;font-size:1rem}
+.risk{background:var(--danger);color:#fff;border-radius:12px;padding:16px 18px;margin:0 0 16px;font-weight:600;line-height:1.55}
+.risk i{margin-right:8px}.risk a{color:#fff}
+.q-grid{display:grid;grid-template-columns:1fr;column-gap:32px}
+@media(min-width:820px){.q-grid.two{grid-template-columns:1fr 1fr}.q-grid.two .q:nth-child(2){border-top:0;padding-top:0}}
+.qintro{background:#f0f7ff;border-radius:10px;padding:12px 14px;margin:6px 0 12px;font-size:.95rem;color:#2c3e50}
+.qintro b{color:var(--primary)}
+.dom{display:grid;grid-template-columns:110px 1fr;gap:10px;align-items:center;margin:10px 0}
+.dom .nm{font-weight:700}
+.dom .lv{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+.dom .lv i{display:block;font-style:normal;text-align:center;font-size:.78rem;font-weight:700;padding:6px 2px;border-radius:6px;background:var(--light);color:var(--gray)}
+.dom .lv i.on.l0{background:#2e8b57;color:#fff}.dom .lv i.on.l1{background:#d07a00;color:#fff}.dom .lv i.on.l2{background:#c0392b;color:#fff}
+.qd{display:inline-block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--gray);background:var(--light);border-radius:6px;padding:1px 8px;margin-bottom:6px}
+</style>
+</head>
+<body>
+<header><div class="container"><div class="header-content">
+  <div class="logo-section"><img src="logo-puskesmas.png" alt="Logo UPTD Puskesmas Damai" class="logo tile"><img src="logo-uph.png" alt="Logo Universitas Pelita Harapan" class="logo tile"></div>
+  <div class="title-section"><h1>Skrining Kesehatan Jiwa Anak dan Remaja (Mini MINDHEAR)</h1><p>UPTD Puskesmas Damai, Kota Balikpapan · bersama PPDS KKLP FK Universitas Pelita Harapan</p></div>
+  <a class="back" href="index.html"><i class="fas fa-arrow-left"></i> Portal</a>
+</div></div></header>
+<main><div class="container">
+
+<div class="setup" id="setup" hidden><b>Formulir belum terhubung ke Google Sheet.</b> Pengelola perlu menempelkan URL Web App pada baris <code>SHEET_URL</code> di PHQ4.html (lihat README). Skor tetap dapat dihitung, tetapi data belum dapat dikirim.</div>
+<form id="f" novalidate>
+<div class="card">
+  <h2 class="sec-title"><span class="badge">1</span>Persetujuan Skrining Kesehatan Jiwa</h2>
+  <label class="consent"><input type="checkbox" id="setuju"> <span>Saya (anak/remaja, atau orang tua/wali/guru yang mendampingi) dengan sadar dan atas keinginan sendiri bersedia menerima pelayanan skrining kesehatan jiwa. Data yang diisi merupakan data yang sebenarnya.</span></label>
+  <p class="status-line" style="margin-top:8px"><i class="fas fa-lock"></i> Data dikirim ke Google Sheet UPTD Puskesmas Damai dan hanya dapat dibuka petugas Puskesmas.</p>
+</div>
+<div class="card">
+  <h2 class="sec-title"><span class="badge">2</span>Identitas Anak dan Orang Tua/Wali</h2>
+  <div class="grid">
+    <label class="f" id="w-nama">Nama anak<input id="nama" autocomplete="off"><span class="msg"></span></label>
+    <label class="f" id="w-nik">NIK anak <small>(lihat Kartu Keluarga, bila ada)</small><input id="nik" inputmode="numeric" maxlength="16" autocomplete="off" placeholder="16 digit"><span class="msg"></span></label>
+    <label class="f" id="w-tgl">Tanggal lahir anak<input id="tglLahir" type="date"><small id="usiaTxt"></small><span class="msg"></span></label>
+    <label class="f" id="w-jk">Jenis kelamin<select id="jk"><option value="">Pilih…</option><option value="L">Laki-laki</option><option value="P">Perempuan</option></select><span class="msg"></span></label>
+    <label class="f">Sekolah <small>(bila ada)</small><input id="sekolah"></label>
+    <label class="f">Kelas <small>(bila ada)</small><input id="kelas" placeholder="misal 5 SD / 8 SMP"></label>
+    <label class="f" id="w-pengisi">Diisi oleh<select id="pengisi"><option value="">Pilih…</option><option>Orang tua</option><option>Pengasuh utama</option><option>Guru</option><option value="Anak sendiri">Anak/remaja sendiri (10–18 tahun)</option></select><span class="msg"></span></label>
+    <label class="f" id="w-ortu">Nama orang tua/wali<input id="ortu"><span class="msg"></span></label>
+    <label class="f" id="w-hp">No HP/WA orang tua/wali<input id="hp" inputmode="tel" placeholder="08…"><span class="msg"></span></label>
+</div>
+</div>
+<div class="card">
+  <h2 class="sec-title"><span class="badge">3</span>Alamat Domisili</h2>
+  <div class="grid">
+    <label class="f">Provinsi<input id="provinsi" value="Kalimantan Timur"></label>
+    <label class="f">Kab/Kota<input id="kota" value="Kota Balikpapan"></label>
+    <label class="f">Kecamatan<input id="kecamatan" value="Balikpapan Kota"></label>
+    <label class="f" id="w-kel">Desa/Kelurahan<select id="kelurahan"><option value="">Pilih…</option><option>Damai</option><option>Damai Baru</option><option>Damai Bahagia</option><option value="Lainnya">Lainnya (di luar wilayah)</option></select><span class="msg"></span></label>
+    <label class="f" id="w-kelLain" hidden>Nama kelurahan<input id="kelurahanLain"></label>
+    <label class="f" id="w-alamat" style="grid-column:1/-1">Alamat lengkap<input id="alamat" placeholder="Jalan, nomor rumah, RT"><span class="msg"></span></label>
+  </div>
+</div>
+<div class="card">
+  <h2 class="sec-title"><span class="badge">4</span>Kuesioner Mini MINDHEAR Youth Scale V.1</h2>
+  <div id="qIntro" class="qintro"></div>
+  <p class="progress" id="prog"></p><div class="bar"><i id="barI"></i></div>
+  <div id="questions" class="q-grid "></div>
+  <div class="result" id="result" aria-live="polite" style="margin-top:6px">
+    <div class="score" id="scoreRow"><span class="num" id="num">–</span><span class="max" id="maxS"></span></div>
+    <div class="cat" id="cat"></div>
+    <div class="alert" id="alert" hidden><i class="fas fa-triangle-exclamation"></i><span id="alertTxt"></span></div>
+    <div id="liveExtra"></div>
+  </div>
+</div>
+<div class="card">
+  <h2 class="sec-title"><span class="badge">5</span>Pelaksanaan</h2>
+  <div class="grid">
+    <label class="f">Tanggal skrining<input id="tglSkrining" type="date"></label>
+    <label class="f">Tempat skrining<select id="lokasi"><option>Sekolah</option><option>Posyandu remaja</option><option>Puskesmas</option><option>Kunjungan rumah</option><option>Mandiri (QR/tautan)</option><option>Lainnya</option></select></label>
+    <label class="f">Petugas/kader/guru <small>(nama atau kode)</small><input id="petugas" autocomplete="off"></label>
+    
+  </div>
+  <div class="hp" aria-hidden="true"><label>Website<input id="website" tabindex="-1" autocomplete="off"></label></div>
+  <div class="submitbar">
+    <button class="btn" type="submit" id="kirim"><i class="fas fa-paper-plane"></i> Kirim ke Google Sheet</button>
+    <button class="btn sec" type="button" id="kosongkan"><i class="fas fa-eraser"></i> Kosongkan</button>
+    <span class="status-line" id="status" role="status"></span>
+  </div>
+</div>
+</form>
+<div id="done" hidden>
+  <div class="card res-card">
+    <div class="res-saved"><i class="fas fa-circle-check"></i> Data tersimpan di UPTD Puskesmas Damai</div>
+    <div class="res-name" id="rName"></div>
+    <div id="rTop"></div>
+  </div>
+  <div class="card res-card">
+    <div class="risk" id="rRisk" hidden></div>
+    <p class="res-advice" id="rAdvice"></p>
+    <div class="res-note" id="rNote"></div>
+    <a class="btn-wa" id="waBtn" href="https://wa.me/628115448787" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> Hubungi kader lewat WhatsApp</a>
+    <p class="wa-num">Telepon/WhatsApp: <b>0811-5448-787</b></p>
+    <button class="btn-out" type="button" id="baru">Isi untuk orang lain</button>
+  </div>
+</div>
+<div class="card" style="margin-top:20px"><h2>Cara menilai Mini MINDHEAR Youth Scale V.1</h2>
+<table class="bands"><thead><tr><th>Domain</th><th>Pola jawaban (butir 1–2–3 tiap domain)</th><th>Interpretasi</th></tr></thead><tbody>
+<tr><td rowspan="3"><b>Ansietas</b><br><small>butir 1–3</small></td><td>Semua Tidak, atau Ya hanya pada butir 2</td><td>Tidak menunjukkan kemungkinan gejala ansietas</td></tr>
+<tr><td>Ya pada butir 1 <i>atau</i> butir 3 (salah satu)</td><td>Kemungkinan gejala ansietas ringan</td></tr>
+<tr><td>Ya pada butir 1 <i>dan</i> butir 3</td><td>Kemungkinan gejala ansietas berat</td></tr>
+<tr><td rowspan="3"><b>Depresi</b><br><small>butir 4–6</small></td><td>Semua Tidak, atau Ya hanya pada butir 5</td><td>Tidak menunjukkan kemungkinan gejala depresi</td></tr>
+<tr><td>Ya pada butir 4 <i>atau</i> butir 6 (salah satu)</td><td>Kemungkinan gejala depresi ringan</td></tr>
+<tr><td>Ya pada butir 4 <i>dan</i> butir 6</td><td>Kemungkinan gejala depresi berat</td></tr>
+</tbody></table>
+<p style="margin-top:10px;font-size:.9rem">Usia 7–9 tahun diisi orang tua, pengasuh utama, atau guru yang mengenal anak dengan baik. Usia 10–18 tahun diisi sendiri oleh anak/remaja dengan jujur dan tanpa dipengaruhi orang lain. Semua pertanyaan wajib dijawab. Hasil <b>Positif</b> di Google Sheet berarti ada kemungkinan gejala ringan atau berat pada salah satu domain; gejala berat ditandai merah. Sumber: Instrumen Deteksi Dini Kesehatan Jiwa Anak dan Remaja Mini MINDHEAR Youth Scale V.1, Direktorat Pelayanan Kesehatan Kelompok Rentan Kemenkes, 7 Juli 2025. Skrining bukan diagnosis.</p></div>
+<div class="card crisis"><h2><i class="fas fa-phone-volume"></i> Bila ada risiko bunuh diri</h2>
+<p>Jangan tinggalkan orang tersebut sendirian, jauhkan benda berbahaya, dan segera hubungi dokter UPTD Puskesmas Damai atau IGD rumah sakit terdekat. Layanan konseling Kemenkes <strong>Healing119.id</strong> dapat dihubungi melalui telepon <strong>119 ekstensi 8</strong> atau situs healing119.id (24 jam, gratis).</p></div><div class="toast" id="toast" role="status"></div>
+</div></main>
+<footer><div class="container">
+  <p>Dikembangkan oleh <strong>dr. Lely Sustantine Totalia</strong></p>
+  <p>Peserta Didik PPDS Kedokteran Keluarga Layanan Primer FK UPH</p>
+  <p class="copyright">&copy; <span class="yr">2026</span> Prodi PPDS KKLP FK UPH · UPTD Puskesmas Damai, Balikpapan</p>
+</div></footer>
+<script>document.querySelectorAll('.yr').forEach(e=>e.textContent=new Date().getFullYear());</script>
+<script>
+(function(){
+  // ====== ATUR DI SINI (boleh dibiarkan) ======
+  // Biarkan seperti ini: halaman otomatis memakai URL yang sama dengan PHQ4.html.
+  // Bila ingin memakai Google Sheet lain, tempel URL Web App (berakhiran /exec) di sini.
+  let SHEET_URL = "TEMPEL_URL_WEB_APP_DI_SINI";
+  // ============================================
+  const OK_URL = u => /^https:\/\/script\.google\.com\/macros\/s\/.+\/exec$/.test(u);
+  const urlReady = (async()=>{
+    if(OK_URL(SHEET_URL)) return true;
+    try{
+      const t = await (await fetch("PHQ4.html",{cache:"no-store"})).text();
+      const m = t.match(/SHEET_URL\s*=\s*"(https:\/\/script\.google\.com\/macros\/s\/[^"]+\/exec)"/);
+      if(m){ SHEET_URL = m[1]; return true; }
+    }catch(e){}
+    return false;
+  })();
+  const WA = "628115448787";
+  const $ = id => document.getElementById(id);
+  const val = id => $(id) ? $(id).value.trim() : "";
+  const today = () => { const d=new Date(); d.setMinutes(d.getMinutes()-d.getTimezoneOffset()); return d.toISOString().slice(0,10); };
+  function age(iso){ if(!iso) return null; const b=new Date(iso+"T00:00:00"), n=new Date(); let a=n.getFullYear()-b.getFullYear(); const m=n.getMonth()-b.getMonth(); if(m<0||(m===0&&n.getDate()<b.getDate())) a--; return a; }
+  const phoneOk = s => !s || /^(\+?62|0)8\d{7,12}$/.test(s.replace(/[\s-]/g,""));
+  function scale(t, max, bands, ticks){
+    const pos = v => (v/max*100), band = bands.find(b=>t>=b.min&&t<=b.max);
+    const segs = bands.map(b=>{ const lo=Math.max(0,b.min-0.5), hi=Math.min(max,b.max+0.5); return `<i style="flex:${hi-lo};background:${b.color}"></i>`; }).join("");
+    return `<div class="scale" role="img" aria-label="Skor ${t} dari ${max}, ${band.label}"><div class="mk" style="left:${pos(t)}%"><b>${t}</b><i></i></div><div class="segs">${segs}</div><div class="ticks">${ticks.map(v=>`<span style="left:${pos(v)}%">${v}</span>`).join("")}</div></div>`;
+  }
+  const ctx = {$, val, age, scale};
+  const I = (function(ctx){ 
+  const {$, val, age} = ctx;
+  const KID = ["Dalam 2 minggu terakhir, anak sering merasa khawatir atau tidak tenang, tegang, deg-degan dan gelisah terutama terhadap hal-hal negatif atau yang belum tentu terjadi.",
+    "Dalam 2 minggu terakhir, anak berpikir berlebihan dan tidak bisa mengendalikan diri, terutama terhadap hal-hal negatif atau yang belum tentu terjadi.",
+    "Dalam 2 minggu terakhir, anak sulit tidur dan berkonsentrasi terutama saat memikirkan hal-hal negatif yang belum tentu terjadi.",
+    "Dalam 2 minggu terakhir, anak sering merasa sedih atau tertekan padahal tidak ada penyebab yang jelas.",
+    "Dalam 2 minggu terakhir, anak tidak tertarik lagi dengan kegiatan atau hal-hal yang biasanya dia suka.",
+    "Dalam 2 minggu terakhir, anak merasa sering capek, sulit tidur, dan sulit fokus saat belajar atau melakukan kegiatan."];
+  const TEEN = ["Dalam 2 minggu terakhir, saya sering merasa khawatir atau tidak tenang, tegang, deg-degan dan gelisah terutama terhadap hal-hal negatif atau yang belum tentu terjadi.",
+    "Dalam 2 minggu terakhir, saya berpikir berlebihan dan tidak bisa mengendalikan diri, terutama terhadap hal-hal negatif atau yang belum tentu terjadi.",
+    "Dalam 2 minggu terakhir, saya sulit tidur dan berkonsentrasi terutama saat memikirkan hal-hal negatif yang belum tentu terjadi.",
+    "Dalam 2 minggu terakhir, saya sering merasa sedih atau tertekan padahal tidak ada penyebab yang jelas.",
+    "Dalam 2 minggu terakhir, saya tidak tertarik lagi dengan kegiatan atau hal-hal yang biasanya saya suka.",
+    "Dalam 2 minggu terakhir, saya merasa sering capek, sulit tidur, dan sulit fokus saat belajar atau melakukan kegiatan."];
+  const LV = ["Tidak ada","Ringan","Berat"];
+  const ver = () => { const a=age($("tglLahir").value); return a==null||a<7||a>18 ? null : a<=9 ? "7-9" : "10-18"; };
+  const dom = (a,b,c) => (a&&c) ? 2 : (a||c) ? 1 : 0;
+  const self = () => $("pengisi").value==="Anak sendiri";
+  function domHTML(s){
+    const row=(nm,l)=>`<div class="dom"><span class="nm">${nm}</span><span class="lv">${LV.map((x,i)=>`<i class="l${i} ${i===l?"on":""}">${x}</i>`).join("")}</span></div>`;
+    return row("Ansietas",s.ans)+row("Depresi",s.dep);
+  }
+  return {
+    inst:"MINDHEAR", key:"mh", n:6, max:0,
+    placeholder: "Isi <b>tanggal lahir anak</b> (usia 7–18 tahun) di bagian Identitas untuk menampilkan pertanyaan yang sesuai usia.",
+    intro(){
+      const v=ver(); if(!v) return null;
+      return v==="7-9"
+        ? "<b>Versi usia 7–9 tahun</b> · diisi oleh orang tua, pengasuh utama, atau guru yang mengenal anak dengan baik. Bacalah setiap pernyataan dengan saksama. Pilih jawaban yang paling menggambarkan kondisi atau perilaku anak <b>dalam 2 minggu terakhir</b>, berdasarkan pengamatan Anda."
+        : "<b>Versi usia 10–18 tahun</b> · diisi sendiri oleh anak/remaja. Bacalah setiap pertanyaan dengan saksama. Pilih jawaban yang paling sesuai dengan apa yang kamu rasakan atau alami <b>dalam 2 minggu terakhir</b>. Jawab dengan jujur dan tanpa dipengaruhi orang lain.";
+    },
+    items: () => ver()==="7-9" ? KID : TEEN,
+    domainAt: i => i===0 ? "Ansietas" : i===3 ? "Depresi" : "",
+    onChange(id){
+      const v=ver();
+      const o=$("pengisi").querySelector('option[value="Anak sendiri"]');
+      if(o){ o.disabled = v==="7-9"; if(v==="7-9" && self()) $("pengisi").value=""; }
+    },
+    score(v){ const done=v.every(x=>x!==null); const ans=dom(v[0],v[1],v[2]), dep=dom(v[3],v[4],v[5]); return {v,done,ans,dep,pos:done&&(ans>0||dep>0),berat:ans===2||dep===2}; },
+    live(s){
+      if(!ver()) return {num:null, cat:""};
+      if(!s.done) return {num:null, cat:"Jawab keenam pertanyaan untuk melihat hasil."};
+      const adv = s.berat ? ["Kemungkinan gejala berat: periksakan anak ke dokter Puskesmas; pertimbangkan konseling psikolog atau rujukan Sp.KJ/Sp.KJAR."]
+                : s.pos ? ["Kemungkinan gejala ringan: edukasi anak dan orang tua, dukungan psikososial, pantau ulang dalam 2 minggu."]
+                : ["Tidak menunjukkan kemungkinan gejala ansietas maupun depresi: edukasi kesehatan jiwa anak dan remaja."];
+      adv.push("Tanyakan dengan lembut tentang pikiran menyakiti diri bila ada tanda bahaya.");
+      return {num:null, cls:s.berat?"bad":s.pos?"warn":"ok", cat:(s.pos?"Positif":"Negatif"), html: domHTML(s)+"<ul>"+adv.map(a=>`<li>${a}</li>`).join("")+"</ul>"};
+    },
+    checks(chk, phoneOk){
+      chk(val("nama").length>=2,"w-nama","Isi nama anak.");
+      chk(!val("nik") || /^\d{16}$/.test(val("nik")),"w-nik","NIK harus 16 digit angka, atau kosongkan.");
+      const a=age($("tglLahir").value); chk(a!=null && a>=7 && a<=18,"w-tgl","Instrumen ini untuk usia 7–18 tahun.");
+      chk(!!$("jk").value,"w-jk","Pilih jenis kelamin.");
+      chk(!!$("pengisi").value && !(a!=null && a<=9 && self()),"w-pengisi","Pilih siapa yang mengisi (usia 7–9 diisi orang tua/pengasuh/guru).");
+      chk(val("ortu").length>=2,"w-ortu","Isi nama orang tua/wali.");
+      chk(!!val("hp") && phoneOk(val("hp")),"w-hp","Isi nomor HP yang valid (08…).");
+    },
+    payload: () => ({pengisi:$("pengisi").value, ortu:val("ortu"), sekolah:val("sekolah"), kelas:val("kelas")}),
+    result(s, d){
+      const kid = d.pengisi==="Anak sendiri";
+      const g = [s.ans? "kecemasan (ansietas) "+LV[s.ans].toLowerCase() : null, s.dep? "depresi "+LV[s.dep].toLowerCase() : null].filter(Boolean).join(" dan ");
+      const color = s.berat?"#c0392b":s.pos?"#d07a00":"#2e8b57";
+      const top = `<div class="res-cat" style="color:${color};margin-top:6px">${s.pos ? "Kemungkinan gejala "+g : "Tidak menunjukkan kemungkinan gejala"}</div>${domHTML(s)}
+        <div class="res-sub"><span class="chip ${s.pos?"pos":"neg"}">${s.berat?"Perlu pemeriksaan lanjut":s.pos?"Perlu dipantau":"Tidak perlu rujukan"}</span></div>`;
+      let advice;
+      if(kid){
+        advice = s.berat ? `Hasil skrining menunjukkan kamu mungkin sedang mengalami gejala ${g}. Ini bukan diagnosis, dan perasaan seperti ini bisa dibantu. Ceritakan kepada orang tua, guru BK, atau orang dewasa yang kamu percaya, lalu minta diantar ke UPTD Puskesmas Damai untuk bertemu dokter atau psikolog.`
+          : s.pos ? `Hasil skrining menunjukkan kamu mungkin sedang mengalami gejala ${g}. Ini cukup sering dialami remaja. Coba ceritakan perasaanmu kepada orang yang kamu percaya, tidur cukup, bergerak atau berolahraga, dan kurangi begadang dengan HP. Bila perasaan ini tidak hilang dalam 2 minggu, minta orang tua atau guru mengantarmu ke Puskesmas.`
+          : `Hasil skrining tidak menunjukkan gejala kecemasan atau depresi. Tetap jaga tidur, makan, dan aktivitas yang kamu sukai, dan ceritakan kepada orang yang kamu percaya bila ada yang mengganggu pikiranmu.`;
+        advice += " Bila kamu pernah berpikir untuk menyakiti diri sendiri, segera beri tahu orang dewasa yang kamu percaya atau telepon 119 ekstensi 8.";
+      } else {
+        advice = s.berat ? `Hasil skrining menunjukkan anak mungkin mengalami gejala ${g}. Ini bukan diagnosis. Mohon bawa anak ke UPTD Puskesmas Damai (Jl. MT Haryono RT 34 No. 5) dalam waktu dekat untuk diperiksa dokter atau psikolog. Dampingi anak, ajak bicara dengan tenang, dan dengarkan tanpa memarahi atau menghakimi.`
+          : s.pos ? `Hasil skrining menunjukkan anak mungkin mengalami gejala ${g}. Luangkan waktu setiap hari untuk mengobrol dan mendengarkan anak, jaga jam tidur dan batasi gawai, serta beri pujian atas usahanya. Pantau selama 2 minggu; bila keluhan menetap atau bertambah, bawa anak ke Puskesmas.`
+          : `Hasil skrining tidak menunjukkan gejala kecemasan atau depresi pada anak. Tetap dampingi anak, jaga jam tidur dan bermain, dan isi ulang skrining bila anak tampak sedih, cemas, atau berubah perilakunya.`;
+      }
+      return { top, advice, risk:"",
+        note: s.pos ? "Petugas atau kader Puskesmas Damai dapat menghubungi orang tua/wali melalui nomor yang diisi. Anda juga bisa menghubungi kader kapan saja." : "Anda bisa menghubungi kader kapan saja bila perlu.",
+        wa: `Halo, saya ${kid ? d.nama : d.ortu}. Saya baru mengisi skrining kesehatan jiwa anak (Mini MINDHEAR) untuk ${d.nama}, hasil: ${s.pos ? "kemungkinan gejala "+g : "tidak ada gejala"}. Saya ingin berkonsultasi.` };
+    }
+  };
+ })(ctx);
+
+  function answers(){ return Array.from({length:I.n},(_,i)=>{ const c=document.querySelector(`input[name="q${i}"]:checked`); return c?Number(c.value):null; }); }
+  function drawQuestions(){
+    const keep = answers(), intro = I.intro();
+    if(intro===null){ $("qIntro").innerHTML = I.placeholder; $("questions").innerHTML=""; return; }
+    $("qIntro").innerHTML = intro;
+    const items = I.items();
+    $("questions").innerHTML = items.map((t,i)=>`<div class="q" role="radiogroup" aria-labelledby="qt${i}">
+      ${I.domainAt && I.domainAt(i) ? `<span class="qd">${I.domainAt(i)}</span>` : ""}
+      <div class="qt" id="qt${i}"><span class="n">${i+1}.</span>${t}</div>
+      <div class="opts yn"><label><input type="radio" name="q${i}" id="q${i}-1" value="1"><span>Ya</span></label><label><input type="radio" name="q${i}" id="q${i}-0" value="0"><span>Tidak</span></label></div></div>`).join("");
+    keep.forEach((v,i)=>{ if(v!==null){ const el=$(`q${i}-${v}`); if(el) el.checked=true; } });
+  }
+  function render(){
+    const v=answers(), n=v.filter(x=>x!==null).length, s=I.score(v);
+    $("prog").textContent = I.intro()===null ? "" : `${n} dari ${I.n} pertanyaan terjawab`;
+    $("barI").style.width = (I.intro()===null?0:100*n/I.n)+"%";
+    const L = I.live(s);
+    $("result").className = "result" + (L.cls ? " "+L.cls : "");
+    $("scoreRow").hidden = L.num==null; $("num").textContent = L.num==null ? "" : L.num; $("maxS").textContent = I.max ? "/ "+I.max : "";
+    $("cat").textContent = L.cat || "";
+    $("alert").hidden = !L.alert; $("alertTxt").textContent = L.alert || "";
+    $("liveExtra").innerHTML = L.html || "";
+  }
+  drawQuestions();
+  urlReady.then(ok=>{ if(!ok) $("setup").hidden=false; });
+  $("tglSkrining").value = today();
+  function restore(){ try{ const p=localStorage.getItem(I.key+".petugas"); if(p) $("petugas").value=p; const l=localStorage.getItem(I.key+".lokasi"); if(l) $("lokasi").value=l; }catch(e){} }
+  restore();
+  $("f").addEventListener("change", e=>{
+    const id=e.target.id;
+    if(id==="kelurahan") $("w-kelLain").hidden = $("kelurahan").value!=="Lainnya";
+    if(id==="jk" && $("w-hamil")){ $("w-hamil").hidden = $("jk").value!=="P"; if($("jk").value!=="P") $("hamil").value="Tidak"; }
+    if(id==="tglLahir"){ const a=age($("tglLahir").value); $("usiaTxt").textContent = a!=null && a>=0 ? `Usia ${a} tahun` : ""; drawQuestions(); }
+    if(I.onChange) I.onChange(id);
+    render();
+  });
+  if($("w-hamil")) $("w-hamil").hidden = true;
+  render();
+
+  function setErr(id,msg){ const w=$(id); if(!w) return; w.classList.toggle("err",!!msg); const m=w.querySelector(".msg"); if(m) m.textContent=msg||""; }
+  function validate(){
+    const errs=[];
+    const chk=(cond,id,msg)=>{ setErr(id,cond?"":msg); if(!cond) errs.push(id); };
+    I.checks(chk, phoneOk);
+    chk(!!$("kelurahan").value,"w-kel","Pilih kelurahan.");
+    chk(val("alamat").length>=3,"w-alamat","Isi alamat lengkap.");
+    return errs;
+  }
+  function clearAll(){
+    $("f").reset(); $("tglSkrining").value=today(); $("usiaTxt").textContent=""; $("w-kelLain").hidden=true;
+    if($("w-hamil")) $("w-hamil").hidden=true;
+    ["provinsi","kota","kecamatan"].forEach(id=>$(id).value=$(id).defaultValue);
+    document.querySelectorAll(".f.err").forEach(w=>w.classList.remove("err")); document.querySelectorAll(".f .msg").forEach(m=>m.textContent="");
+    restore(); if(I.onChange) I.onChange(""); drawQuestions();
+    $("status").textContent=""; $("status").className="status-line"; render();
+  }
+  $("kosongkan").addEventListener("click",clearAll);
+  $("baru").addEventListener("click",()=>{ clearAll(); $("done").hidden=true; $("f").hidden=false; window.scrollTo({top:0,behavior:"smooth"}); });
+
+  $("f").addEventListener("submit", async e=>{
+    e.preventDefault();
+    const st=$("status"); st.className="status-line";
+    if(!$("setuju").checked){ st.textContent="Centang persetujuan skrining terlebih dahulu."; st.className="status-line bad"; $("setuju").focus(); return; }
+    const errs=validate();
+    if(errs.length){ st.textContent="Periksa kembali isian yang ditandai merah."; st.className="status-line bad"; $(errs[0]).scrollIntoView({behavior:"smooth",block:"center"}); return; }
+    const v=answers(), s=I.score(v);
+    if(v.some(x=>x===null)){ st.textContent=`Jawab semua ${I.n} pertanyaan.`; st.className="status-line bad"; $("questions").scrollIntoView({behavior:"smooth"}); return; }
+    if(!(await urlReady)){ st.textContent="Formulir belum terhubung ke Google Sheet. Hubungi pengelola."; st.className="status-line bad"; return; }
+    const kel = $("kelurahan").value==="Lainnya" ? (val("kelurahanLain")||"Lainnya") : $("kelurahan").value;
+    const data = Object.assign({ instrumen:I.inst,
+      tglSkrining:$("tglSkrining").value, lokasi:$("lokasi").value, petugas:val("petugas"),
+      nik:val("nik"), nama:val("nama"), tglLahir:$("tglLahir").value, jk:$("jk").value,
+      provinsi:val("provinsi"), kota:val("kota"), kecamatan:val("kecamatan"), kelurahan:kel, alamat:val("alamat"), hp:val("hp"),
+      jawaban:v, website:$("website").value }, I.payload());
+    const btn=$("kirim"); btn.disabled=true; st.textContent="Mengirim…";
+    try{
+      const res = await fetch(SHEET_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(data)});
+      const j = await res.json();
+      if(!j.ok) throw j;
+      try{ localStorage.setItem(I.key+".petugas",data.petugas); localStorage.setItem(I.key+".lokasi",data.lokasi); }catch(_){}
+      $("rName").textContent = data.nama;
+      const R = I.result(s, data);
+      $("rTop").innerHTML = R.top; $("rAdvice").textContent = R.advice; $("rNote").textContent = R.note;
+      $("rRisk").hidden = !R.risk; $("rRisk").innerHTML = R.risk || "";
+      $("waBtn").href = `https://wa.me/${WA}?text=${encodeURIComponent(R.wa)}`;
+      clearAll(); $("f").hidden=true; $("done").hidden=false; window.scrollTo({top:0,behavior:"smooth"});
+    }catch(err){
+      st.className="status-line bad";
+      st.textContent = err && err.error==="invalid" && /PHQ-4/.test(err.detail||"")
+        ? "Google Apps Script belum diperbarui untuk formulir ini. Pengelola perlu menempel Code-PHQ4.gs versi terbaru lalu Deploy ulang (New version)."
+        : err && err.error==="invalid" ? "Data ditolak: "+(err.detail||"periksa isian")+"."
+        : "Gagal mengirim. Periksa sinyal internet lalu tekan Kirim lagi; isian Anda tidak hilang.";
+    }finally{ btn.disabled=false; }
+  });
+})();
+</script>
+</body>
+</html>

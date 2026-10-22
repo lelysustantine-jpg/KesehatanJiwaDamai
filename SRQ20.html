@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Skrining SRQ-20</title>
+<title>Skrining SRQ-20 - Puskesmas Damai</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
 :root{--primary:#0066a1;--primary-dark:#004a7c;--accent:#2a9d8f;--danger:#c62828;--danger-bg:#ffebee;
 --warn:#b26a00;--warn-bg:#fff4e0;--ok:#2e7d32;--ok-bg:#e8f5e9;--light:#f5f7fa;--dark:#212529;--gray:#5f6b76;--line:#e3e8ee;--card:#ffffff}
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+[hidden]{display:none!important}
 body{background:var(--light);color:var(--dark);line-height:1.6}
 .container{max-width:1100px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
 header{background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);color:#fff;padding:18px 0;box-shadow:0 4px 12px rgba(0,0,0,.1)}
@@ -66,40 +67,168 @@ a{color:var(--primary)}
 .bands th{color:var(--gray);font-size:.8rem;text-transform:uppercase;letter-spacing:.04em}
 .crisis{border-left:5px solid var(--danger)}.crisis h2{color:var(--danger)}
 .toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--dark);color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;display:none;z-index:9}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.f{display:flex;flex-direction:column;gap:4px;font-size:.88rem;font-weight:600;color:#38434d;min-width:0}
+.f small{font-weight:400;color:var(--gray)}
+.f input,.f select,.f textarea{font:inherit;font-weight:400;font-size:.98rem;padding:10px 12px;border:1.5px solid var(--line);border-radius:8px;background:#fff;color:var(--dark);width:100%}
+.f input:focus,.f select:focus,.f textarea:focus{border-color:var(--primary);outline:none;box-shadow:0 0 0 3px rgba(0,102,161,.15)}
+.f.err input,.f.err select{border-color:var(--danger)}
+.f .msg{color:var(--danger);font-weight:500;font-size:.8rem}
+.consent{display:flex;gap:12px;align-items:flex-start;background:#f0f7ff;border-radius:10px;padding:14px;font-size:.95rem;cursor:pointer}
+.consent input{width:22px;height:22px;flex:none;margin-top:2px;accent-color:var(--primary)}
+.sec-title{display:flex;align-items:center;gap:10px}
+.sec-title .badge{background:var(--primary);color:#fff;border-radius:50%;width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;font-size:.9rem;flex:none}
+.sub3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.sub3 div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.sub3 span{display:block;font-size:.75rem;color:var(--gray);text-transform:uppercase;letter-spacing:.04em;font-weight:700}
+.sub3 b{font-size:1.6rem;font-variant-numeric:tabular-nums}
+.submitbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:16px}
+.status-line{font-size:.9rem;color:var(--gray)}
+.status-line.bad{color:var(--danger);font-weight:600}
+.done{text-align:center;padding:30px 22px}
+.done .big{font-size:3rem;color:var(--ok)}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.logo.tile{background:#fff;padding:6px}
+.res-card{padding:24px}
+.res-saved{display:inline-flex;gap:8px;align-items:center;font-size:.85rem;font-weight:600;color:var(--ok);background:var(--ok-bg);border-radius:99px;padding:4px 12px;margin-bottom:12px}
+.res-name{font-weight:700;font-size:1.05rem;color:#15312f;word-break:break-word}
+.res-score{display:flex;align-items:baseline;gap:10px;margin-top:6px}
+.res-score span{font-size:4rem;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.res-score small{color:var(--gray);font-size:.95rem}
+.res-cat{font-size:1.35rem;font-weight:800;margin:4px 0 14px}
+.scale{position:relative;padding-top:20px;margin:4px 0 6px}
+.scale .segs{display:flex;gap:4px;height:14px}
+.scale .segs i{display:block;height:100%;border-radius:4px}
+.scale .mk{position:absolute;top:0;width:0;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center}
+.scale .mk b{font-size:.75rem;line-height:1;margin-bottom:2px}
+.scale .mk i{display:block;width:3px;height:30px;background:#111;border-radius:2px}
+.scale .ticks{position:relative;height:18px;margin-top:6px;font-size:.75rem;color:var(--gray)}
+.scale .ticks span{position:absolute;transform:translateX(-50%)}
+.scale .ticks span:first-child{transform:none}.scale .ticks span:last-child{transform:translateX(-100%)}
+.res-sub{font-size:.9rem;color:var(--gray);margin-top:8px}
+.chip{display:inline-block;border-radius:99px;padding:2px 10px;font-size:.78rem;font-weight:700}
+.chip.pos{background:var(--danger-bg);color:var(--danger)}.chip.neg{background:var(--ok-bg);color:var(--ok)}
+.res-advice{font-size:1.05rem;line-height:1.65;color:#22313a}
+.res-note{background:#e3efed;border-radius:10px;padding:14px 16px;margin:16px 0;color:#2c3e3c;font-size:.95rem}
+.btn-wa{display:flex;justify-content:center;align-items:center;gap:10px;background:#0f6b66;color:#fff;text-decoration:none;font-weight:700;font-size:1.05rem;border-radius:12px;padding:16px}
+.btn-wa:hover{background:#0b5753}
+.btn-wa i{font-size:1.3rem}
+.wa-num{text-align:center;font-size:.9rem;color:var(--gray);margin:8px 0 12px}
+.btn-out{display:block;width:100%;background:#fff;color:#0f6b66;border:2px solid #0f6b66;border-radius:12px;padding:14px;font-weight:700;font-size:1.05rem;cursor:pointer}
+.btn-out:hover{background:#eef6f5}
+.setup{background:var(--warn-bg);border-left:5px solid var(--warn);border-radius:8px;padding:14px 16px;margin-bottom:20px}
+
+.opts.yn{grid-template-columns:repeat(2,minmax(0,150px))}
+.opts.yn span{min-height:46px;font-size:1rem}
+.risk{background:var(--danger);color:#fff;border-radius:12px;padding:16px 18px;margin:0 0 16px;font-weight:600;line-height:1.55}
+.risk i{margin-right:8px}.risk a{color:#fff}
+.q-grid{display:grid;grid-template-columns:1fr;column-gap:32px}
+@media(min-width:820px){.q-grid.two{grid-template-columns:1fr 1fr}.q-grid.two .q:nth-child(2){border-top:0;padding-top:0}}
+.qintro{background:#f0f7ff;border-radius:10px;padding:12px 14px;margin:6px 0 12px;font-size:.95rem;color:#2c3e50}
+.qintro b{color:var(--primary)}
+.dom{display:grid;grid-template-columns:110px 1fr;gap:10px;align-items:center;margin:10px 0}
+.dom .nm{font-weight:700}
+.dom .lv{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+.dom .lv i{display:block;font-style:normal;text-align:center;font-size:.78rem;font-weight:700;padding:6px 2px;border-radius:6px;background:var(--light);color:var(--gray)}
+.dom .lv i.on.l0{background:#2e8b57;color:#fff}.dom .lv i.on.l1{background:#d07a00;color:#fff}.dom .lv i.on.l2{background:#c0392b;color:#fff}
+.qd{display:inline-block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--gray);background:var(--light);border-radius:6px;padding:1px 8px;margin-bottom:6px}
 </style>
 </head>
 <body>
 <header><div class="container"><div class="header-content">
-  <div class="logo-section"><img src="KKLP.jpg" alt="Logo KKLP" class="logo"><img src="fkuph.jpg" alt="Logo FK UPH" class="logo"></div>
-  <div class="title-section"><h1>Self Reporting Questionnaire (SRQ-20)</h1><p>Verifikasi gangguan mental emosional di Puskesmas · usia ≥19 tahun</p></div>
+  <div class="logo-section"><img src="logo-puskesmas.png" alt="Logo UPTD Puskesmas Damai" class="logo tile"><img src="logo-uph.png" alt="Logo Universitas Pelita Harapan" class="logo tile"></div>
+  <div class="title-section"><h1>Skrining Kesehatan Jiwa SRQ-20</h1><p>UPTD Puskesmas Damai, Kota Balikpapan · bersama PPDS KKLP FK Universitas Pelita Harapan</p></div>
   <a class="back" href="index.html"><i class="fas fa-arrow-left"></i> Portal</a>
 </div></div></header>
 <main><div class="container">
 
-<div class="note"><i class="fas fa-info-circle"></i>Pertanyaan berikut berhubungan dengan keluhan yang mungkin mengganggu Anda dalam <b>30 hari terakhir</b>. Jawab <b>Ya</b> bila keluhan dialami, <b>Tidak</b> bila tidak.</div>
+<div class="setup" id="setup" hidden><b>Formulir belum terhubung ke Google Sheet.</b> Pengelola perlu menempelkan URL Web App pada baris <code>SHEET_URL</code> di PHQ4.html (lihat README). Skor tetap dapat dihitung, tetapi data belum dapat dikirim.</div>
+<form id="f" novalidate>
 <div class="card">
-  <p class="progress" id="prog"></p><div class="bar"><i id="barI"></i></div>
-  <form id="qform" onsubmit="return false"></form>
+  <h2 class="sec-title"><span class="badge">1</span>Persetujuan Skrining Kesehatan Jiwa</h2>
+  <label class="consent"><input type="checkbox" id="setuju"> <span>Saya dengan sadar dan atas keinginan sendiri bersedia menerima pelayanan skrining kesehatan jiwa atas diri sendiri. Data yang saya isi merupakan data yang sebenarnya.</span></label>
+  <p class="status-line" style="margin-top:8px"><i class="fas fa-lock"></i> Data dikirim ke Google Sheet UPTD Puskesmas Damai dan hanya dapat dibuka petugas Puskesmas.</p>
 </div>
-<div class="result" id="result" aria-live="polite">
-  <div class="score"><span class="num" id="num">0</span><span class="max" id="maxS"></span></div>
-  <div class="cat" id="cat"></div>
-  <div class="alert" id="alert" hidden><i class="fas fa-triangle-exclamation"></i>Butir 17 dijawab Ya (pikiran untuk mengakhiri hidup). Lakukan penilaian risiko bunuh diri hari ini, apa pun skor totalnya.</div>
-  <div id="advice"></div>
-  <div class="actions">
-    <button class="btn" type="button" id="copyBtn" hidden><i class="fas fa-copy"></i> Salin ringkasan</button>
-    <button class="btn sec" type="button" id="resetBtn"><i class="fas fa-rotate-left"></i> Ulangi</button>
+<div class="card">
+  <h2 class="sec-title"><span class="badge">2</span>Identitas</h2>
+  <div class="grid">
+    <label class="f" id="w-nik">NIK<input id="nik" inputmode="numeric" maxlength="16" autocomplete="off" placeholder="16 digit"><span class="msg"></span></label>
+    <label class="f" id="w-nama">Nama<input id="nama" autocomplete="name"><span class="msg"></span></label>
+    <label class="f" id="w-tgl">Tanggal lahir<input id="tglLahir" type="date"><small id="usiaTxt"></small><span class="msg"></span></label>
+    <label class="f" id="w-jk">Jenis kelamin<select id="jk"><option value="">Pilih…</option><option value="L">Laki-laki</option><option value="P">Perempuan</option></select><span class="msg"></span></label>
+    <label class="f" id="w-kawin">Status perkawinan<select id="kawin"><option value="">Pilih…</option><option>Belum menikah</option><option>Menikah</option><option>Cerai Mati</option><option>Cerai Hidup</option></select><span class="msg"></span></label>
+    <label class="f" id="w-hamil">Status kehamilan<select id="hamil"><option value="Tidak">Tidak</option><option value="Ya">Ya</option></select></label>
+    <label class="f">Calon pengantin<select id="catin"><option value="Tidak">Tidak</option><option value="Ya">Ya</option></select></label>
+    <label class="f" id="w-hp">No HP/WA<input id="hp" inputmode="tel" autocomplete="tel" placeholder="08…"><span class="msg"></span></label>
+    <label class="f">Nama pendamping/caregiver <small>(bila ada)</small><input id="pendamping"></label>
+    <label class="f" id="w-hpPend">No HP/WA pendamping <small>(bila ada)</small><input id="hpPendamping" inputmode="tel" placeholder="08…"><span class="msg"></span></label>
+</div>
+</div>
+<div class="card">
+  <h2 class="sec-title"><span class="badge">3</span>Alamat Domisili</h2>
+  <div class="grid">
+    <label class="f">Provinsi<input id="provinsi" value="Kalimantan Timur"></label>
+    <label class="f">Kab/Kota<input id="kota" value="Kota Balikpapan"></label>
+    <label class="f">Kecamatan<input id="kecamatan" value="Balikpapan Kota"></label>
+    <label class="f" id="w-kel">Desa/Kelurahan<select id="kelurahan"><option value="">Pilih…</option><option>Damai</option><option>Damai Baru</option><option>Damai Bahagia</option><option value="Lainnya">Lainnya (di luar wilayah)</option></select><span class="msg"></span></label>
+    <label class="f" id="w-kelLain" hidden>Nama kelurahan<input id="kelurahanLain"></label>
+    <label class="f" id="w-alamat" style="grid-column:1/-1">Alamat lengkap<input id="alamat" placeholder="Jalan, nomor rumah, RT"><span class="msg"></span></label>
   </div>
-  <p class="progress" style="margin-top:12px"><i class="fas fa-lock"></i> Jawaban hanya dihitung di perangkat ini dan tidak disimpan.</p>
 </div>
-<div class="card" style="margin-top:20px"><h2>Interpretasi skor</h2>
-  <table class="bands"><thead><tr><th>Skor</th><th>Kategori</th></tr></thead><tbody id="bandRows"></tbody></table>
-  <p style="margin-top:12px;font-size:.9rem">Titik potong ≥6 sesuai pelaporan skrining kesehatan jiwa Puskesmas. Rujukan: Beusenberg M, Orley J. A User’s Guide to the Self Reporting Questionnaire (SRQ). Geneva: WHO; 1994 (WHO/MNH/PSF/94.8).</p>
+<div class="card">
+  <h2 class="sec-title"><span class="badge">4</span>Kuesioner SRQ-20</h2>
+  <div id="qIntro" class="qintro"></div>
+  <p class="progress" id="prog"></p><div class="bar"><i id="barI"></i></div>
+  <div id="questions" class="q-grid two"></div>
+  <div class="result" id="result" aria-live="polite" style="margin-top:6px">
+    <div class="score" id="scoreRow"><span class="num" id="num">–</span><span class="max" id="maxS"></span></div>
+    <div class="cat" id="cat"></div>
+    <div class="alert" id="alert" hidden><i class="fas fa-triangle-exclamation"></i><span id="alertTxt"></span></div>
+    <div id="liveExtra"></div>
+  </div>
 </div>
+<div class="card">
+  <h2 class="sec-title"><span class="badge">5</span>Pelaksanaan</h2>
+  <div class="grid">
+    <label class="f">Tanggal skrining<input id="tglSkrining" type="date"></label>
+    <label class="f">Tempat skrining<select id="lokasi"><option>Puskesmas</option><option>Posyandu</option><option>Kunjungan rumah</option><option>Mandiri (QR/tautan)</option><option>Lainnya</option></select></label>
+    <label class="f">Petugas/dokter <small>(nama atau kode)</small><input id="petugas" autocomplete="off"></label>
+    <label class="f">Sumber rujukan<select id="sumber"><option value="">Pilih…</option><option>Skrining PHQ-4</option><option>Skrining EPDS</option><option>Rujukan kader</option><option>Pemeriksaan di poli</option><option>Datang sendiri</option><option>Lainnya</option></select></label>
+  </div>
+  <div class="hp" aria-hidden="true"><label>Website<input id="website" tabindex="-1" autocomplete="off"></label></div>
+  <div class="submitbar">
+    <button class="btn" type="submit" id="kirim"><i class="fas fa-paper-plane"></i> Kirim ke Google Sheet</button>
+    <button class="btn sec" type="button" id="kosongkan"><i class="fas fa-eraser"></i> Kosongkan</button>
+    <span class="status-line" id="status" role="status"></span>
+  </div>
+</div>
+</form>
+<div id="done" hidden>
+  <div class="card res-card">
+    <div class="res-saved"><i class="fas fa-circle-check"></i> Data tersimpan di UPTD Puskesmas Damai</div>
+    <div class="res-name" id="rName"></div>
+    <div id="rTop"></div>
+  </div>
+  <div class="card res-card">
+    <div class="risk" id="rRisk" hidden></div>
+    <p class="res-advice" id="rAdvice"></p>
+    <div class="res-note" id="rNote"></div>
+    <a class="btn-wa" id="waBtn" href="https://wa.me/628115448787" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> Hubungi kader lewat WhatsApp</a>
+    <p class="wa-num">Telepon/WhatsApp: <b>0811-5448-787</b></p>
+    <button class="btn-out" type="button" id="baru">Isi untuk orang lain</button>
+  </div>
+</div>
+<div class="card" style="margin-top:20px"><h2>Cara menilai SRQ-20</h2>
+<table class="bands"><thead><tr><th>Komponen</th><th>Penilaian</th></tr></thead><tbody>
+<tr><td>Jawaban</td><td>Ya = 1 · Tidak = 0 (20 butir, total 0–20)</td></tr>
+<tr><td>Total 0–5</td><td>Tidak terindikasi gangguan mental emosional: edukasi kesehatan jiwa</td></tr>
+<tr><td>Total ≥6</td><td><b>Positif</b>: terindikasi gangguan mental emosional; lanjutkan wawancara klinis sesuai mhGAP, nilai derajat dengan PHQ-9 atau GAD-7</td></tr>
+<tr><td>Butir 17</td><td>Jawaban Ya (pikiran mengakhiri hidup) ditandai merah dan perlu penilaian risiko bunuh diri hari itu juga, apa pun skornya</td></tr>
+</tbody></table>
+<p style="margin-top:10px;font-size:.9rem">Instrumen: Self Reporting Questionnaire-20 (WHO, 1994) sesuai formulir Instrumen Skrining Kesehatan Jiwa Kemenkes. Skrining bukan diagnosis. Kolom <b>Tindak lanjut</b> dan <b>Catatan petugas</b> diisi di Google Sheet.</p></div>
 <div class="card crisis"><h2><i class="fas fa-phone-volume"></i> Bila ada risiko bunuh diri</h2>
-<p>Jangan tinggalkan orang tersebut sendirian, jauhkan benda berbahaya, dan segera hubungi dokter UPTD Puskesmas Damai atau IGD rumah sakit terdekat. Layanan konseling Kemenkes <strong>Healing119.id</strong> dapat dihubungi melalui telepon <strong>119 ekstensi 8</strong> atau situs healing119.id (24 jam, gratis).</p></div>
-<div class="toast" id="toast" role="status"></div>
-
+<p>Jangan tinggalkan orang tersebut sendirian, jauhkan benda berbahaya, dan segera hubungi dokter UPTD Puskesmas Damai atau IGD rumah sakit terdekat. Layanan konseling Kemenkes <strong>Healing119.id</strong> dapat dihubungi melalui telepon <strong>119 ekstensi 8</strong> atau situs healing119.id (24 jam, gratis).</p></div><div class="toast" id="toast" role="status"></div>
 </div></main>
 <footer><div class="container">
   <p>Dikembangkan oleh <strong>dr. Lely Sustantine Totalia</strong></p>
@@ -109,45 +238,170 @@ a{color:var(--primary)}
 <script>document.querySelectorAll('.yr').forEach(e=>e.textContent=new Date().getFullYear());</script>
 <script>
 (function(){
-const C = {"name": "SRQ-20", "options": [["Tidak", 0], ["Ya", 1]], "safety": 16, "extra": null, "safetyText": "Butir 17 dijawab Ya (pikiran untuk mengakhiri hidup). Lakukan penilaian risiko bunuh diri hari ini, apa pun skor totalnya.", "items": ["Apakah Anda sering menderita sakit kepala?", "Apakah Anda kehilangan nafsu makan?", "Apakah tidur Anda tidak lelap?", "Apakah Anda mudah merasa takut?", "Apakah Anda merasa cemas, tegang, atau khawatir?", "Apakah tangan Anda gemetar?", "Apakah pencernaan Anda terganggu atau buruk?", "Apakah Anda sulit berpikir jernih?", "Apakah Anda merasa tidak bahagia?", "Apakah Anda lebih sering menangis?", "Apakah Anda merasa sulit menikmati kegiatan sehari-hari?", "Apakah Anda sulit mengambil keputusan?", "Apakah pekerjaan sehari-hari Anda terganggu?", "Apakah Anda tidak mampu berperan dalam kehidupan ini?", "Apakah Anda kehilangan minat terhadap berbagai hal?", "Apakah Anda merasa tidak berharga?", "Apakah Anda mempunyai pikiran untuk mengakhiri hidup?", "Apakah Anda merasa lelah sepanjang waktu?", "Apakah Anda merasa tidak enak di perut?", "Apakah Anda mudah lelah?"], "bands": [{"min": 0, "max": 5, "label": "Tidak terindikasi gangguan mental emosional", "level": "ok", "advice": ["Edukasi kesehatan jiwa; tata laksana keluhan fisik sesuai indikasi.", "Ulangi skrining bila keluhan menetap."]}, {"min": 6, "max": 20, "label": "Terindikasi gangguan mental emosional (skor ≥6)", "level": "bad", "advice": ["Lanjutkan wawancara klinis dan penegakan diagnosis sesuai mhGAP.", "Gunakan PHQ-9 atau GAD-7 untuk menilai derajat depresi atau cemas.", "Tata laksana di Puskesmas atau rujuk ke Sp.KJ sesuai derajat."]}]};
-const form = document.getElementById('qform');
-form.innerHTML = C.items.map((t,i)=>`<div class="q" role="radiogroup" aria-labelledby="t${i}">
-  <div class="qt" id="t${i}"><span class="n">${i+1}.</span>${t}</div>
-  <div class="opts ${C.options.length===2?'yn':''}">${C.options.map(([lab,val])=>`<label><input type="radio" name="q${i}" id="q${i}-${val}" value="${val}"><span><b>${C.options.length===2?lab:val}</b>${C.options.length===2?'':lab}</span></label>`).join('')}</div>
-</div>`).join('') + (C.extra ? `<div class="q"><div class="qt">${C.extra.text}</div><div class="opts">${C.extra.options.map((o,j)=>`<label><input type="radio" name="extra" value="${j}"><span>${o}</span></label>`).join('')}</div><p class="progress" style="margin-top:6px">Pertanyaan ini tidak dihitung dalam skor.</p></div>` : '');
-document.getElementById('bandRows').innerHTML = C.bands.map(b=>`<tr><td>${b.min}–${b.max}</td><td>${b.label}</td></tr>`).join('');
-const n = C.items.length, maxScore = n*Math.max(...C.options.map(o=>o[1]));
-function read(){ const v=[]; for(let i=0;i<n;i++){ const c=form.querySelector(`input[name="q${i}"]:checked`); v.push(c?Number(c.value):null);} return v; }
-function band(s){ return C.bands.find(b=>s>=b.min && s<=b.max) || C.bands[C.bands.length-1]; }
-let summary='';
-function render(){
-  const v=read(), done=v.filter(x=>x!==null).length, s=v.reduce((a,b)=>a+(b||0),0);
-  document.getElementById('prog').textContent=`${done} dari ${n} pertanyaan terjawab`;
-  document.getElementById('barI').style.width=(100*done/n)+'%';
-  const box=document.getElementById('result'); box.className='result';
-  const safety = C.safety!=null && v[C.safety]!=null && v[C.safety]>0;
-  document.getElementById('alert').hidden=!safety;
-  if(done<n){ document.getElementById('num').textContent=s; document.getElementById('cat').textContent='Lengkapi semua pertanyaan untuk melihat hasil.'; document.getElementById('advice').innerHTML=''; document.getElementById('copyBtn').hidden=true; if(safety) box.classList.add('bad'); return; }
-  const b=band(s); box.classList.add(safety?'bad':b.level);
-  document.getElementById('num').textContent=s;
-  document.getElementById('cat').textContent=b.label;
-  document.getElementById('advice').innerHTML='<ul>'+b.advice.map(a=>`<li>${a}</li>`).join('')+'</ul>';
-  document.getElementById('copyBtn').hidden=false;
-  const ex = C.extra ? form.querySelector('input[name="extra"]:checked') : null;
-  summary = `${C.name} — ${new Date().toLocaleDateString('id-ID')}\nSkor: ${s}/${maxScore} (${b.label})` +
-    (safety? `\nPERHATIAN: ${C.safetyText}` : '') +
-    (ex? `\n${C.extra.short}: ${C.extra.options[Number(ex.value)]}` : '') +
-    `\nJawaban: ${v.map((x,i)=>(i+1)+'='+(C.options.length===2?(x?'Ya':'Tidak'):x)).join(', ')}`;
-}
-form.addEventListener('change',render);
-document.getElementById('maxS').textContent='/ '+maxScore;
-document.getElementById('resetBtn').addEventListener('click',()=>{ form.reset(); render(); window.scrollTo({top:0,behavior:'smooth'}); });
-document.getElementById('copyBtn').addEventListener('click',async()=>{
-  try{ await navigator.clipboard.writeText(summary); toast('Ringkasan disalin. Tempel ke rekam medis atau pesan rujukan.'); }
-  catch(e){ const t=document.createElement('textarea'); t.value=summary; document.body.appendChild(t); t.select(); try{document.execCommand('copy'); toast('Ringkasan disalin.');}catch(_){toast('Salin manual: '+summary);} t.remove(); }
-});
-function toast(m){ const t=document.getElementById('toast'); t.textContent=m; t.style.display='block'; clearTimeout(toast.h); toast.h=setTimeout(()=>t.style.display='none',3000); }
-render();
+  // ====== ATUR DI SINI (boleh dibiarkan) ======
+  // Biarkan seperti ini: halaman otomatis memakai URL yang sama dengan PHQ4.html.
+  // Bila ingin memakai Google Sheet lain, tempel URL Web App (berakhiran /exec) di sini.
+  let SHEET_URL = "TEMPEL_URL_WEB_APP_DI_SINI";
+  // ============================================
+  const OK_URL = u => /^https:\/\/script\.google\.com\/macros\/s\/.+\/exec$/.test(u);
+  const urlReady = (async()=>{
+    if(OK_URL(SHEET_URL)) return true;
+    try{
+      const t = await (await fetch("PHQ4.html",{cache:"no-store"})).text();
+      const m = t.match(/SHEET_URL\s*=\s*"(https:\/\/script\.google\.com\/macros\/s\/[^"]+\/exec)"/);
+      if(m){ SHEET_URL = m[1]; return true; }
+    }catch(e){}
+    return false;
+  })();
+  const WA = "628115448787";
+  const $ = id => document.getElementById(id);
+  const val = id => $(id) ? $(id).value.trim() : "";
+  const today = () => { const d=new Date(); d.setMinutes(d.getMinutes()-d.getTimezoneOffset()); return d.toISOString().slice(0,10); };
+  function age(iso){ if(!iso) return null; const b=new Date(iso+"T00:00:00"), n=new Date(); let a=n.getFullYear()-b.getFullYear(); const m=n.getMonth()-b.getMonth(); if(m<0||(m===0&&n.getDate()<b.getDate())) a--; return a; }
+  const phoneOk = s => !s || /^(\+?62|0)8\d{7,12}$/.test(s.replace(/[\s-]/g,""));
+  function scale(t, max, bands, ticks){
+    const pos = v => (v/max*100), band = bands.find(b=>t>=b.min&&t<=b.max);
+    const segs = bands.map(b=>{ const lo=Math.max(0,b.min-0.5), hi=Math.min(max,b.max+0.5); return `<i style="flex:${hi-lo};background:${b.color}"></i>`; }).join("");
+    return `<div class="scale" role="img" aria-label="Skor ${t} dari ${max}, ${band.label}"><div class="mk" style="left:${pos(t)}%"><b>${t}</b><i></i></div><div class="segs">${segs}</div><div class="ticks">${ticks.map(v=>`<span style="left:${pos(v)}%">${v}</span>`).join("")}</div></div>`;
+  }
+  const ctx = {$, val, age, scale};
+  const I = (function(ctx){ 
+  const {$, val, age, scale} = ctx;
+  const ITEMS = ["Apakah Anda sering menderita sakit kepala?", "Apakah Anda kehilangan nafsu makan?", "Apakah tidur Anda tidak lelap?", "Apakah Anda mudah merasa takut?", "Apakah Anda merasa cemas, tegang, atau khawatir?", "Apakah tangan Anda gemetar?", "Apakah pencernaan Anda terganggu atau buruk?", "Apakah Anda sulit berpikir jernih?", "Apakah Anda merasa tidak bahagia?", "Apakah Anda lebih sering menangis?", "Apakah Anda merasa sulit menikmati kegiatan sehari-hari?", "Apakah Anda sulit mengambil keputusan?", "Apakah pekerjaan sehari-hari Anda terganggu?", "Apakah Anda tidak mampu berperan dalam kehidupan ini?", "Apakah Anda kehilangan minat terhadap berbagai hal?", "Apakah Anda merasa tidak berharga?", "Apakah Anda mempunyai pikiran untuk mengakhiri hidup?", "Apakah Anda merasa lelah sepanjang waktu?", "Apakah Anda merasa tidak enak di perut?", "Apakah Anda mudah lelah?"];
+  const BANDS = [{min:0,max:5,label:"Tidak terindikasi",color:"#2e8b57"},{min:6,max:20,label:"Terindikasi gangguan mental emosional",color:"#c0392b"}];
+  return {
+    inst:"SRQ20", key:"srq", n:20, max:20,
+    intro: () => "Pertanyaan berikut berhubungan dengan keluhan yang mungkin mengganggu Anda <b>dalam 30 hari terakhir</b>. Jawab <b>Ya</b> bila keluhan dialami, <b>Tidak</b> bila tidak.",
+    placeholder: "",
+    items: () => ITEMS,
+    score(v){ const done=v.every(x=>x!==null), t=v.reduce((a,b)=>a+(b||0),0); return {v,done,t,risk:v[16]===1,pos:done&&t>=6}; },
+    live(s){
+      const alert = s.risk ? "Butir 17 dijawab Ya (pikiran mengakhiri hidup). Lakukan penilaian risiko bunuh diri hari ini, apa pun skor totalnya." : "";
+      if(!s.done) return {num:null, cls:s.risk?"bad":"", cat:"Jawab semua pertanyaan untuk melihat hasil.", alert};
+      const adv = s.pos ? ["Skor ≥6: terindikasi gangguan mental emosional.","Lanjutkan wawancara klinis dan penegakan diagnosis sesuai mhGAP; nilai derajat dengan PHQ-9 atau GAD-7.","Tata laksana di Puskesmas atau rujuk ke Sp.KJ sesuai derajat."]
+                        : ["Skor <6: tidak terindikasi gangguan mental emosional.","Edukasi kesehatan jiwa; tata laksana keluhan fisik sesuai indikasi."];
+      return {num:s.t, cls:s.pos||s.risk?"bad":"ok", cat:(s.pos?"Positif · ":"Negatif · ")+(s.pos?"terindikasi gangguan mental emosional":"tidak terindikasi"), alert,
+              html: scale(s.t,20,BANDS,[0,6,20]) + "<ul>"+adv.map(a=>`<li>${a}</li>`).join("")+"</ul>"};
+    },
+    checks(chk, phoneOk){
+      chk(/^\d{16}$/.test(val("nik")),"w-nik","NIK harus 16 digit angka.");
+      chk(val("nama").length>=2,"w-nama","Isi nama.");
+      const a=age($("tglLahir").value); chk(a!=null && a>=15 && a<=110,"w-tgl","Isi tanggal lahir yang benar (usia minimal 15 tahun).");
+      chk(!!$("jk").value,"w-jk","Pilih jenis kelamin.");
+      chk(!!$("kawin").value,"w-kawin","Pilih status perkawinan.");
+      chk(!!val("hp") && phoneOk(val("hp")),"w-hp","Isi nomor HP yang valid (08…).");
+      chk(phoneOk(val("hpPendamping")),"w-hpPend","Nomor HP pendamping tidak valid.");
+    },
+    payload: () => ({kawin:$("kawin").value, hamil:$("hamil").value, catin:$("catin").value, pendamping:val("pendamping"), hpPendamping:val("hpPendamping"), sumber:$("sumber").value}),
+    result(s, d){
+      const b = s.pos ? BANDS[1] : BANDS[0];
+      const top = `<div class="res-score"><span style="color:${b.color}">${s.t}</span><small>dari 20</small></div>
+        <div class="res-cat" style="color:${b.color}">${b.label}</div>${scale(s.t,20,BANDS,[0,6,20])}
+        <div class="res-sub"><span class="chip ${s.pos||s.risk?"pos":"neg"}">${s.pos?"Perlu pemeriksaan lanjut":s.risk?"Perlu dihubungi petugas":"Tidak perlu rujukan"}</span></div>`;
+      const advice = s.pos
+        ? "Hasil skrining menunjukkan adanya gejala gangguan mental emosional yang perlu diperiksa lebih lanjut oleh dokter. Hasil ini bukan diagnosis, dan kondisi ini dapat ditolong. Silakan berkonsultasi dengan dokter UPTD Puskesmas Damai (Jl. MT Haryono RT 34 No. 5). Bercerita kepada keluarga atau orang yang Anda percaya juga dapat membantu."
+        : "Hasil skrining tidak menunjukkan gangguan mental emosional. Tetap jaga tidur, makan, dan aktivitas fisik, serta luangkan waktu bercerita dengan keluarga atau teman. Segera berkonsultasi bila keluhan muncul atau bertambah berat.";
+      return { top, advice, risk: s.risk ? `<i class="fas fa-heart-crack"></i>Anda menyebutkan adanya pikiran untuk mengakhiri hidup. Anda tidak sendirian dan ini dapat ditolong. Mohon segera hubungi kami lewat tombol di bawah, datang ke UPTD Puskesmas Damai atau IGD terdekat, atau telepon layanan Healing119 di <a href="tel:119">119 ekstensi 8</a> (24 jam, gratis).` : "",
+        note: s.pos||s.risk ? "Petugas Puskesmas Damai akan menghubungi Anda melalui nomor yang Anda isi. Anda juga bisa menghubungi kader kapan saja." : "Anda bisa menghubungi kader kapan saja bila perlu.",
+        wa: `Halo, saya ${d.nama}. Saya baru mengisi skrining kesehatan jiwa SRQ-20 (skor ${s.t} dari 20, ${s.pos?"perlu pemeriksaan lanjut":"tidak terindikasi"}). Saya ingin berkonsultasi.` };
+    }
+  };
+ })(ctx);
+
+  function answers(){ return Array.from({length:I.n},(_,i)=>{ const c=document.querySelector(`input[name="q${i}"]:checked`); return c?Number(c.value):null; }); }
+  function drawQuestions(){
+    const keep = answers(), intro = I.intro();
+    if(intro===null){ $("qIntro").innerHTML = I.placeholder; $("questions").innerHTML=""; return; }
+    $("qIntro").innerHTML = intro;
+    const items = I.items();
+    $("questions").innerHTML = items.map((t,i)=>`<div class="q" role="radiogroup" aria-labelledby="qt${i}">
+      ${I.domainAt && I.domainAt(i) ? `<span class="qd">${I.domainAt(i)}</span>` : ""}
+      <div class="qt" id="qt${i}"><span class="n">${i+1}.</span>${t}</div>
+      <div class="opts yn"><label><input type="radio" name="q${i}" id="q${i}-1" value="1"><span>Ya</span></label><label><input type="radio" name="q${i}" id="q${i}-0" value="0"><span>Tidak</span></label></div></div>`).join("");
+    keep.forEach((v,i)=>{ if(v!==null){ const el=$(`q${i}-${v}`); if(el) el.checked=true; } });
+  }
+  function render(){
+    const v=answers(), n=v.filter(x=>x!==null).length, s=I.score(v);
+    $("prog").textContent = I.intro()===null ? "" : `${n} dari ${I.n} pertanyaan terjawab`;
+    $("barI").style.width = (I.intro()===null?0:100*n/I.n)+"%";
+    const L = I.live(s);
+    $("result").className = "result" + (L.cls ? " "+L.cls : "");
+    $("scoreRow").hidden = L.num==null; $("num").textContent = L.num==null ? "" : L.num; $("maxS").textContent = I.max ? "/ "+I.max : "";
+    $("cat").textContent = L.cat || "";
+    $("alert").hidden = !L.alert; $("alertTxt").textContent = L.alert || "";
+    $("liveExtra").innerHTML = L.html || "";
+  }
+  drawQuestions();
+  urlReady.then(ok=>{ if(!ok) $("setup").hidden=false; });
+  $("tglSkrining").value = today();
+  function restore(){ try{ const p=localStorage.getItem(I.key+".petugas"); if(p) $("petugas").value=p; const l=localStorage.getItem(I.key+".lokasi"); if(l) $("lokasi").value=l; }catch(e){} }
+  restore();
+  $("f").addEventListener("change", e=>{
+    const id=e.target.id;
+    if(id==="kelurahan") $("w-kelLain").hidden = $("kelurahan").value!=="Lainnya";
+    if(id==="jk" && $("w-hamil")){ $("w-hamil").hidden = $("jk").value!=="P"; if($("jk").value!=="P") $("hamil").value="Tidak"; }
+    if(id==="tglLahir"){ const a=age($("tglLahir").value); $("usiaTxt").textContent = a!=null && a>=0 ? `Usia ${a} tahun` : ""; drawQuestions(); }
+    if(I.onChange) I.onChange(id);
+    render();
+  });
+  if($("w-hamil")) $("w-hamil").hidden = true;
+  render();
+
+  function setErr(id,msg){ const w=$(id); if(!w) return; w.classList.toggle("err",!!msg); const m=w.querySelector(".msg"); if(m) m.textContent=msg||""; }
+  function validate(){
+    const errs=[];
+    const chk=(cond,id,msg)=>{ setErr(id,cond?"":msg); if(!cond) errs.push(id); };
+    I.checks(chk, phoneOk);
+    chk(!!$("kelurahan").value,"w-kel","Pilih kelurahan.");
+    chk(val("alamat").length>=3,"w-alamat","Isi alamat lengkap.");
+    return errs;
+  }
+  function clearAll(){
+    $("f").reset(); $("tglSkrining").value=today(); $("usiaTxt").textContent=""; $("w-kelLain").hidden=true;
+    if($("w-hamil")) $("w-hamil").hidden=true;
+    ["provinsi","kota","kecamatan"].forEach(id=>$(id).value=$(id).defaultValue);
+    document.querySelectorAll(".f.err").forEach(w=>w.classList.remove("err")); document.querySelectorAll(".f .msg").forEach(m=>m.textContent="");
+    restore(); if(I.onChange) I.onChange(""); drawQuestions();
+    $("status").textContent=""; $("status").className="status-line"; render();
+  }
+  $("kosongkan").addEventListener("click",clearAll);
+  $("baru").addEventListener("click",()=>{ clearAll(); $("done").hidden=true; $("f").hidden=false; window.scrollTo({top:0,behavior:"smooth"}); });
+
+  $("f").addEventListener("submit", async e=>{
+    e.preventDefault();
+    const st=$("status"); st.className="status-line";
+    if(!$("setuju").checked){ st.textContent="Centang persetujuan skrining terlebih dahulu."; st.className="status-line bad"; $("setuju").focus(); return; }
+    const errs=validate();
+    if(errs.length){ st.textContent="Periksa kembali isian yang ditandai merah."; st.className="status-line bad"; $(errs[0]).scrollIntoView({behavior:"smooth",block:"center"}); return; }
+    const v=answers(), s=I.score(v);
+    if(v.some(x=>x===null)){ st.textContent=`Jawab semua ${I.n} pertanyaan.`; st.className="status-line bad"; $("questions").scrollIntoView({behavior:"smooth"}); return; }
+    if(!(await urlReady)){ st.textContent="Formulir belum terhubung ke Google Sheet. Hubungi pengelola."; st.className="status-line bad"; return; }
+    const kel = $("kelurahan").value==="Lainnya" ? (val("kelurahanLain")||"Lainnya") : $("kelurahan").value;
+    const data = Object.assign({ instrumen:I.inst,
+      tglSkrining:$("tglSkrining").value, lokasi:$("lokasi").value, petugas:val("petugas"),
+      nik:val("nik"), nama:val("nama"), tglLahir:$("tglLahir").value, jk:$("jk").value,
+      provinsi:val("provinsi"), kota:val("kota"), kecamatan:val("kecamatan"), kelurahan:kel, alamat:val("alamat"), hp:val("hp"),
+      jawaban:v, website:$("website").value }, I.payload());
+    const btn=$("kirim"); btn.disabled=true; st.textContent="Mengirim…";
+    try{
+      const res = await fetch(SHEET_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(data)});
+      const j = await res.json();
+      if(!j.ok) throw j;
+      try{ localStorage.setItem(I.key+".petugas",data.petugas); localStorage.setItem(I.key+".lokasi",data.lokasi); }catch(_){}
+      $("rName").textContent = data.nama;
+      const R = I.result(s, data);
+      $("rTop").innerHTML = R.top; $("rAdvice").textContent = R.advice; $("rNote").textContent = R.note;
+      $("rRisk").hidden = !R.risk; $("rRisk").innerHTML = R.risk || "";
+      $("waBtn").href = `https://wa.me/${WA}?text=${encodeURIComponent(R.wa)}`;
+      clearAll(); $("f").hidden=true; $("done").hidden=false; window.scrollTo({top:0,behavior:"smooth"});
+    }catch(err){
+      st.className="status-line bad";
+      st.textContent = err && err.error==="invalid" && /PHQ-4/.test(err.detail||"")
+        ? "Google Apps Script belum diperbarui untuk formulir ini. Pengelola perlu menempel Code-PHQ4.gs versi terbaru lalu Deploy ulang (New version)."
+        : err && err.error==="invalid" ? "Data ditolak: "+(err.detail||"periksa isian")+"."
+        : "Gagal mengirim. Periksa sinyal internet lalu tekan Kirim lagi; isian Anda tidak hilang.";
+    }finally{ btn.disabled=false; }
+  });
 })();
 </script>
 </body>
